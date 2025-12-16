@@ -1,3 +1,3 @@
-export function TestPage() {
+export function Test() {
   return <div>Hi there!</div>
 }
