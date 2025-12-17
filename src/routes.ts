@@ -4,7 +4,7 @@ import { Test } from './pages/Test'
 import { Home } from './pages/Home'
 import { AuthLayout } from './pages/AuthLayout'
 import { Login } from './components/Login'
-import { SignUp } from './components/Signup'
+import { SignUp } from './components/SignUp'
 
 export const router = createBrowserRouter([
   {
