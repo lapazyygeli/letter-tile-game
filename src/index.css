@@ -1,15 +1,29 @@
 @import 'tailwindcss';
 
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+@font-face {
+  font-family: 'Poly';
+  src:
+    local('Poly'),
+    url('./assets/fonts/Poly-Regular.ttf') format('truetype');
 }
 
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
+@theme {
+  --color-bg-dark: hsl(0, 0%, 0%);
+  --color-bg: hsl(0, 0%, 5%);
+  --color-bg-light: hsl(0, 0%, 10%);
+  --color-text: hsl(0, 0%, 90%);
+  --color-text-mutated: hsl(0, 0%, 70%);
+  --color-border: hsl(0, 0%, 30%);
+  --color-border-hightlight: hsl(0, 0%, 60%);
+  --background-image-bg-gradient: linear-gradient(
+    0deg,
+    var(--color-bg) 95%,
+    var(--color-bg-light)
+  );
+  --background-image-bg-gradient-hover: linear-gradient(
+    0deg,
+    var(--color-bg),
+    var(--color-bg-light)
+  );
+  --font-poly: 'Poly', sans-serif;
 }
