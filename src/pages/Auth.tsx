@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router'
 
-export function AuthLayout() {
+export function Auth() {
   return (
     <div>
       <p>AuthLayout text</p>

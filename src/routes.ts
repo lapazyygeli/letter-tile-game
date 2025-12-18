@@ -2,9 +2,9 @@ import { createBrowserRouter, redirect } from 'react-router'
 import App from './App'
 import { Test } from './pages/Test'
 import { Home } from './pages/Home'
-import { AuthLayout } from './pages/AuthLayout'
-import { Login } from './components/Login'
-import { SignUp } from './components/SignUp'
+import { Auth } from './pages/Auth'
+import { Login } from './features/auth/Login'
+import { SignUp } from './features/auth/SignUp'
 
 export const router = createBrowserRouter([
   {
@@ -14,7 +14,7 @@ export const router = createBrowserRouter([
       { index: true, Component: Home },
       {
         path: 'auth',
-        Component: AuthLayout,
+        Component: Auth,
         children: [
           { index: true, loader: () => redirect('/') },
           { path: 'login', Component: Login },
