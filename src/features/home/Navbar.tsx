@@ -1,13 +1,38 @@
+import { useEffect, useState } from 'react'
 import MenuIcon from '../../assets/icons/menu_24dp_E6E6E6_FILL0_wght400_GRAD0_opsz24.svg?react'
+import { useLockBodyScroll } from '../../hooks/lock-body-scroll'
 
-export function Navbar() {
+type NavbarProps = {
+  title?: string
+}
+
+export function Navbar({ title }: NavbarProps) {
+  const [isOpen, setIsOpen] = useState(false)
+
+  useLockBodyScroll(isOpen)
+
+  const handleClickOpen = () => {
+    setIsOpen((prev) => !prev)
+  }
+
   return (
-    <nav className='sm:px-16 sm:py-10'>
-      <div className='flex items-center justify-between px-8 py-8'>
-        <span className='text-xl'>Alphabet Ninja</span>
-        <button>
-          <MenuIcon className='h-10 w-10' />
-        </button>
+    <nav className='sticky top-0'>
+      <div className={`${isOpen && 'flex h-screen flex-col'}`}>
+        <div className='bg-bg-dark flex items-center justify-between px-8 py-8'>
+          <span className='text-xl'>{title}</span>
+          <button onClick={handleClickOpen}>
+            <MenuIcon className='h-10 w-10' />
+          </button>
+        </div>
+        {isOpen && (
+          <div className='grow bg-red-400'>
+            <ul className='flex h-full flex-col items-center justify-center gap-8 text-3xl'>
+              <li>About</li>
+              <li>Log In</li>
+              <li>Sign Up</li>
+            </ul>
+          </div>
+        )}
       </div>
     </nav>
   )
