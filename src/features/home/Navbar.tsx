@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import MenuIcon from '../../assets/icons/menu_24dp_E6E6E6_FILL0_wght400_GRAD0_opsz24.svg?react'
 import { useLockBodyScroll } from '../../hooks/lock-body-scroll'
 
@@ -7,24 +7,24 @@ type NavbarProps = {
 }
 
 export function Navbar({ title }: NavbarProps) {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-  useLockBodyScroll(isOpen)
+  useLockBodyScroll(isMenuOpen)
 
-  const handleClickOpen = () => {
-    setIsOpen((prev) => !prev)
+  const handleToggleMenu = () => {
+    setIsMenuOpen((prev) => !prev)
   }
 
   return (
     <nav className='sticky top-0'>
-      <div className={`${isOpen && 'flex h-screen flex-col'}`}>
+      <div className={`${isMenuOpen && 'flex h-screen flex-col'}`}>
         <div className='bg-bg-dark flex items-center justify-between px-8 py-8'>
           <span className='text-xl'>{title}</span>
-          <button onClick={handleClickOpen}>
+          <button onClick={handleToggleMenu}>
             <MenuIcon className='h-10 w-10' />
           </button>
         </div>
-        {isOpen && (
+        {isMenuOpen && (
           <div className='grow bg-red-400'>
             <ul className='flex h-full flex-col items-center justify-center gap-8 text-3xl'>
               <li>About</li>
