@@ -16,40 +16,38 @@ export function Navbar({ title }: NavbarProps) {
   }
 
   return (
-    <nav className='sticky top-0'>
-      <div className={`${isMenuOpen && 'flex h-screen flex-col'}`}>
-        <div className='bg-bg-dark flex items-center justify-between px-8 py-8'>
-          <span className='text-xl'>{title}</span>
-          <button onClick={handleToggleMenu}>
-            <MenuIcon className='h-10 w-10' />
-          </button>
-        </div>
-        {isMenuOpen && (
-          <div className='grow bg-red-400'>
+    <nav className='sticky top-0 md:static'>
+      {/* Default menu for desktop and mobile (when not open = default) */}
+      <div className='bg-bg-dark flex items-center justify-between px-8 py-8'>
+        <span className='text-xl'>{title}</span>
+        <button className='md:hidden' onClick={handleToggleMenu}>
+          <MenuIcon className='h-10 w-10' />
+        </button>
+        <ul className='hidden items-center justify-center md:flex'>
+          <li>About</li>
+          <li>Log In</li>
+          <li>Sign Up</li>
+        </ul>
+      </div>
+
+      {/* Mobile menu when menu is open */}
+      {isMenuOpen && (
+        <div className='fixed inset-0 flex flex-col bg-red-400'>
+          <div className='bg-bg-dark flex items-center justify-between px-8 py-8'>
+            <span className='text-xl'>{title}</span>
+            <button onClick={handleToggleMenu}>
+              <MenuIcon className='h-10 w-10' />
+            </button>
+          </div>
+          <div className='grow'>
             <ul className='flex h-full flex-col items-center justify-center gap-8 text-3xl'>
               <li>About</li>
               <li>Log In</li>
               <li>Sign Up</li>
             </ul>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </nav>
   )
 }
-
-/*
-<nav className='bg-amber-900 sm:px-16 sm:py-10'>
-      <div className='sm:flex sm:justify-between'>
-        <div>
-          <span>Alphabet Ninja</span>
-          <img className='sm:inline' src='#' alt='logo' />
-        </div>
-        <ul className='sm:flex'>
-          <li>About</li>
-          <li>Log In</li>
-          <li>Sign Up</li>
-        </ul>
-      </div>
-    </nav>
-*/
