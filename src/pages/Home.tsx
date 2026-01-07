@@ -1,9 +1,11 @@
 import { Navbar } from '../features/home/Navbar'
 
+const navLinks = ['About', 'Log In', 'Sign Up']
+
 export function Home() {
   return (
     <div>
-      <Navbar title='Alphabet Ninja' />
+      <Navbar title='Alphabet Ninja' navLinks={navLinks} />
       {/*Tää osuus nimellä HeroSection */}
       <header className='min-h-screen bg-amber-900'>
         <p>
