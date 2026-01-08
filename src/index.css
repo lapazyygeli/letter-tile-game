@@ -11,6 +11,10 @@
   --color-bg-dark: hsl(0, 0%, 0%);
   --color-bg: hsl(0, 0%, 5%);
   --color-bg-light: hsl(0, 0%, 10%);
+  --color-green-dark: hsl(120, 85%, 15%);
+  /*og: --color-green: hsl(120, 85%, 40%);*/
+  --color-green: hsl(120, 85%, 30%);
+  --color-green-light: hsl(120, 85%, 60%);
   --color-text: hsl(0, 0%, 90%);
   --color-text-mutated: hsl(0, 0%, 70%);
   --color-border: hsl(0, 0%, 30%);
