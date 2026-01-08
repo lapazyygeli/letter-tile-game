@@ -18,20 +18,25 @@ export function Navbar({ title, navLinks }: NavbarProps) {
   }
 
   return (
-    <nav className='sticky top-0 md:static'>
+    <nav className='fixed top-0 right-0 left-0 md:absolute'>
       {/* Default menu for desktop and mobile (when not open = default) */}
-      <div className='bg-bg-dark flex items-center justify-between px-8 py-8 md:px-16 md:py-10'>
-        <span className='text-xl'>{title}</span>
-        <button className='md:hidden' onClick={handleToggleMenu}>
-          <MenuIcon className='h-10 w-10' />
-        </button>
-        <ul className='hidden items-center justify-center gap-x-5 md:flex'>
-          {navLinks.map((navLinkTitle) => (
-            <li className='cursor-pointer after:block after:h-0.5 after:w-full after:origin-left after:scale-0 after:bg-white after:transition-transform after:duration-300 after:ease-in-out after:content-[""] hover:text-white hover:after:scale-100'>
-              {navLinkTitle}
-            </li>
-          ))}
-        </ul>
+      <div className='bg-bg-dark md:bg-transparent'>
+        <div className='mx-auto flex w-full max-w-7xl items-center justify-between px-8 py-8 md:px-16 md:py-10'>
+          <span className='text-xl'>{title}</span>
+          <button className='md:hidden' onClick={handleToggleMenu}>
+            <MenuIcon className='h-10 w-10' />
+          </button>
+          <ul className='hidden items-center justify-center gap-x-5 md:flex'>
+            {navLinks.map((navLinkTitle) => (
+              <li
+                key={navLinkTitle}
+                className='cursor-pointer after:block after:h-0.5 after:w-full after:origin-left after:scale-0 after:bg-white after:transition-transform after:duration-300 after:ease-in-out after:content-[""] hover:text-white hover:after:scale-100'
+              >
+                {navLinkTitle}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
       {/* TODO: Animate mobile menu open/close */}
