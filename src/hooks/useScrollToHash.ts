@@ -9,7 +9,7 @@ export function useScrollToHash() {
       const section = document.querySelector(location.hash)
       section?.scrollIntoView({ behavior: 'smooth' })
     }
-  }, [location])
+  }, [location.hash])
 
   return null
 }
