@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import MenuIcon from '../../assets/icons/menu_24dp_E6E6E6_FILL0_wght400_GRAD0_opsz24.svg?react'
 import CloseIcon from '../../assets/icons/close_24dp_E6E6E6_FILL0_wght400_GRAD0_opsz24.svg?react'
-import { useLockBodyScroll } from '../../hooks/lock-body-scroll'
+import { useLockBodyScroll } from '../../hooks/useLockBodyScroll'
+import { Link } from 'react-router'
+import type { NavLink } from './types'
 
 type NavbarProps = {
   title?: string
-  navLinks: string[]
+  navLinks: NavLink[]
 }
 
 export function Navbar({ title, navLinks }: NavbarProps) {
@@ -27,13 +29,14 @@ export function Navbar({ title, navLinks }: NavbarProps) {
             <MenuIcon className='h-10 w-10' />
           </button>
           <ul className='hidden items-center justify-center gap-x-5 md:flex'>
-            {navLinks.map((navLinkTitle) => (
-              <li
-                key={navLinkTitle}
+            {navLinks.map((navLink, index) => (
+              <Link
+                key={index}
+                to={navLink.to}
                 className='cursor-pointer after:block after:h-0.5 after:w-full after:origin-left after:scale-0 after:bg-white after:transition-transform after:duration-300 after:ease-in-out after:content-[""] hover:text-white hover:after:scale-100'
               >
-                {navLinkTitle}
-              </li>
+                {navLink.title}
+              </Link>
             ))}
           </ul>
         </div>
@@ -51,10 +54,15 @@ export function Navbar({ title, navLinks }: NavbarProps) {
           </div>
           <div className='grow'>
             <ul className='flex h-full flex-col items-center justify-center gap-8 text-3xl'>
-              {navLinks.map((navLinkTitle) => (
-                <li className='cursor-pointer hover:text-white'>
-                  {navLinkTitle}
-                </li>
+              {navLinks.map((navLink, index) => (
+                <Link
+                  key={index}
+                  to={navLink.to}
+                  className='cursor-pointer hover:text-white'
+                  onClick={handleToggleMenu}
+                >
+                  {navLink.title}
+                </Link>
               ))}
             </ul>
           </div>
