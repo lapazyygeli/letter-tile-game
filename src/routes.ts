@@ -6,6 +6,8 @@ import { Auth } from './pages/Auth'
 import { Login } from './features/auth/Login'
 import { SignUp } from './features/auth/SignUp'
 
+// TODO: handle routes which don't match
+
 export const router = createBrowserRouter([
   {
     path: '/',

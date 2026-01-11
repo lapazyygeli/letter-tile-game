@@ -17,6 +17,7 @@
   --color-green-light: hsl(120, 85%, 60%);
   --color-text: hsl(0, 0%, 90%);
   --color-text-mutated: hsl(0, 0%, 70%);
+  --color-text-mutated-dark: hsl(0, 0%, 50%);
   --color-border: hsl(0, 0%, 30%);
   --color-border-hightlight: hsl(0, 0%, 60%);
   --background-image-bg-gradient: linear-gradient(
