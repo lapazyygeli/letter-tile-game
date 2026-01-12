@@ -1,15 +1,26 @@
+import CloseIcon from '../../assets/icons/close_24dp_E6E6E6_FILL0_wght400_GRAD0_opsz24.svg?react'
 import { useNavigate } from 'react-router'
 
 export function Login() {
   const navigate = useNavigate()
 
+  // TODO: remove these if not needed really
   const navigateToDashboard = () => {}
   const navigateToSignUp = () => {
     navigate('/auth/signup')
   }
+  const navigateToHome = () => {
+    navigate('/')
+  }
 
   return (
-    <div className='bg-bg border-border border px-10 py-10 md:px-20'>
+    <div className='bg-bg border-border relative border px-10 py-10 md:px-20'>
+      <button
+        onClick={navigateToHome}
+        className='absolute top-3 right-3 cursor-pointer md:top-5 md:right-5'
+      >
+        <CloseIcon className='fill-text-mutated-dark h-8.75 w-8.75' />
+      </button>
       <div className='max-w-90'>
         <div className='mb-6 text-center'>
           <h1 className='text-green-light mb-2 text-center text-3xl'>
@@ -18,7 +29,7 @@ export function Login() {
           <p className='text-text-mutated-dark'>Join the word battle</p>
         </div>
         <div className='mb-5 flex'>
-          <button className='border-green-light text-green-light w-1/2 cursor-pointer border-b-2 py-4'>
+          <button className='border-green-light text-green-light w-1/2 border-b-2 py-4'>
             Login
           </button>
           <button
