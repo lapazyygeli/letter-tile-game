@@ -14,14 +14,14 @@ export function Login() {
   }
 
   return (
-    <div className='bg-bg border-border relative border px-10 py-10 md:px-20'>
+    <div className='bg-bg border-border relative w-full max-w-130 border px-10 py-10 md:px-20'>
       <button
         onClick={navigateToHome}
         className='absolute top-3 right-3 cursor-pointer md:top-5 md:right-5'
       >
         <CloseIcon className='fill-text-mutated-dark h-8.75 w-8.75' />
       </button>
-      <div className='max-w-90'>
+      <div className='mx-auto w-full max-w-90'>
         <div className='mb-6 text-center'>
           <h1 className='text-green-light mb-2 text-center text-3xl'>
             Alphabet Ninja
@@ -48,11 +48,11 @@ export function Login() {
           <input
             type='password'
             placeholder='Password'
-            className='border-border bg-bg-light mb-8 w-full border px-6 py-3'
+            className='border-border bg-bg-light mb-4 w-full border px-6 py-3'
           />
           <button
             onClick={() => {}}
-            className='bg-green text-text w-full cursor-pointer rounded-lg py-3'
+            className='bg-green text-text mt-4 w-full cursor-pointer rounded-lg py-3'
           >
             Login & Play
           </button>
