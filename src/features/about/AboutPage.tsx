@@ -1,4 +1,4 @@
-export function About() {
+export function AboutPage() {
   return (
     <section id='about' className='bg-blue-900'>
       <h2>How To Play</h2>

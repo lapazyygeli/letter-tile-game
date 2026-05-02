@@ -1,7 +1,5 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
-import { FormInput } from '../../components/FormInput'
-import { AuthCard } from '../../components/AuthCard'
 
 type SignUpFormData = {
   username: string
@@ -45,12 +43,20 @@ const inputs: {
   },
 ]
 
-export function SignUp() {
+export function SignUpPage() {
   const navigate = useNavigate()
   const [formData, setFormData] = useState<SignUpFormData>(initialFormData)
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    if (formData.password !== formData.passwordConfirmed) {
+      setError('Passwords do not match')
+      return
+    }
+
+    setError(null)
     setFormData(initialFormData)
   }
 
@@ -61,16 +67,8 @@ export function SignUp() {
     }))
   }
 
-  // TODO: remove these if not needed really
-  const navigateToLogin = () => {
-    navigate('/auth/login')
-  }
-  const navigateToHome = () => {
-    navigate('/')
-  }
-
   return (
-    <AuthCard onClose={navigateToHome}>
+    <div>
       <div className='mb-6 text-center'>
         <h1 className='text-green-light mb-2 text-center text-3xl'>
           Alphabet Ninja
@@ -79,7 +77,7 @@ export function SignUp() {
       </div>
       <div className='mb-5 flex'>
         <button
-          onClick={navigateToLogin}
+          onClick={() => navigate('/auth/login')}
           className='hover:border-green-light hover:text-green-light border-text-mutated-dark text-text-mutated-dark w-1/2 cursor-pointer border-b-2 py-4 transition-colors duration-500'
         >
           Login
@@ -88,18 +86,22 @@ export function SignUp() {
           Sign Up
         </button>
       </div>
-      <form onSubmit={handleSubmit} className='mb-10'>
+      <form onSubmit={handleSubmit}>
         {inputs.map((input, index) => (
-          <FormInput
-            key={index}
-            name={input.name}
-            value={formData[input.name]}
-            type={input.type}
-            placeholder={input.placeholder}
-            autoComplete={input.autoComplete}
-            required={input.required}
-            onChange={handleInputChange}
-          />
+          <div key={index}>
+            <input
+              name={input.name}
+              value={formData[input.name]}
+              type={input.type}
+              placeholder={input.placeholder}
+              autoComplete={input.autoComplete}
+              required={input.required}
+              onChange={handleInputChange}
+              className={
+                'bg-bg-light border-border mb-4 w-full border px-6 py-3'
+              }
+            ></input>
+          </div>
         ))}
         <button
           type='submit'
@@ -108,7 +110,8 @@ export function SignUp() {
           Sign Up
         </button>
       </form>
-      <hr className='border-border pb-0.5' />
-    </AuthCard>
+      {error && <p>Error</p>}
+      <hr className='border-border mt-10 pb-0.5' />
+    </div>
   )
 }

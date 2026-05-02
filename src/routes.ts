@@ -1,31 +1,31 @@
 import { createBrowserRouter, redirect } from 'react-router'
-import App from './App'
-import { Test } from './pages/Test'
-import { Home } from './pages/Home'
-import { Auth } from './pages/Auth'
-import { Login } from './features/auth/Login'
-import { SignUp } from './features/auth/SignUp'
+import AppLayout from './features/AppLayout'
+import { TestPage } from './features/test/TestPage'
+import { HomePage } from './features/home/HomePage'
+import { AuthLayout } from './features/auth/AuthLayout'
+import { LoginPage } from './features/auth/login/LoginPage'
+import { SignUpPage } from './features/auth/signup/SignUpPage'
 
 // TODO: handle routes which don't match
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    Component: App,
+    Component: AppLayout,
     children: [
-      { index: true, Component: Home },
+      { index: true, Component: HomePage },
       {
         path: 'auth',
-        Component: Auth,
+        Component: AuthLayout,
         children: [
           { index: true, loader: () => redirect('/') },
-          { path: 'login', Component: Login },
-          { path: 'signup', Component: SignUp },
+          { path: 'login', Component: LoginPage },
+          { path: 'signup', Component: SignUpPage },
         ],
       },
       {
         path: '/test',
-        Component: Test,
+        Component: TestPage,
       },
     ],
   },

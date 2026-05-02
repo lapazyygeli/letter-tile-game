@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router'
-import { useScrollToHash } from './hooks/useScrollToHash'
+import { useScrollToHash } from '../hooks/useScrollToHash'
 
-function App() {
+function AppLayout() {
   useScrollToHash()
 
   // Add any providers here
@@ -9,4 +9,4 @@ function App() {
   return <Outlet />
 }
 
-export default App
+export default AppLayout

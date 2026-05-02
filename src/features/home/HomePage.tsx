@@ -1,7 +1,7 @@
-import { Navbar } from '../features/home/Navbar'
-import { Hero } from '../features/home/Hero'
-import { About } from '../features/home/About'
-import type { NavLink } from '../features/home/types'
+import { Navbar } from './Navbar'
+import { Hero } from './Hero'
+import { AboutPage } from '../about/AboutPage'
+import type { NavLink } from './types'
 import { useNavigate } from 'react-router'
 
 const navLinks: NavLink[] = [
@@ -19,7 +19,7 @@ const navLinks: NavLink[] = [
   },
 ]
 
-export function Home() {
+export function HomePage() {
   const navigate = useNavigate()
 
   return (
@@ -42,7 +42,7 @@ export function Home() {
         buttonText='Play Now'
         onButtonClick={() => navigate('/auth/login')}
       />
-      <About />
+      <AboutPage />
     </div>
   )
 }

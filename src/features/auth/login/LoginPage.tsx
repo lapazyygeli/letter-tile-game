@@ -1,20 +1,10 @@
-import { AuthCard } from '../../components/AuthCard'
 import { useNavigate } from 'react-router'
 
-export function Login() {
+export function LoginPage() {
   const navigate = useNavigate()
 
-  // TODO: remove these if not needed really
-  const navigateToDashboard = () => {}
-  const navigateToSignUp = () => {
-    navigate('/auth/signup')
-  }
-  const navigateToHome = () => {
-    navigate('/')
-  }
-
   return (
-    <AuthCard onClose={navigateToHome}>
+    <div>
       <div className='mb-6 text-center'>
         <h1 className='text-green-light mb-2 text-center text-3xl'>
           Alphabet Ninja
@@ -26,7 +16,7 @@ export function Login() {
           Login
         </button>
         <button
-          onClick={navigateToSignUp}
+          onClick={() => navigate('/auth/signup')}
           className='hover:border-green-light hover:text-green-light border-text-mutated-dark text-text-mutated-dark w-1/2 cursor-pointer border-b-2 py-4 transition-colors duration-500'
         >
           Sign Up
@@ -53,13 +43,10 @@ export function Login() {
       <hr className='border-border pb-7' />
       <div className='text-center text-xs'>
         <p className='text-text-mutated-dark mb-2'>Just want to try?</p>
-        <button
-          onClick={navigateToDashboard}
-          className='text-green-light cursor-pointer'
-        >
+        <button onClick={() => {}} className='text-green-light cursor-pointer'>
           Play as Guest --&gt;
         </button>
       </div>
-    </AuthCard>
+    </div>
   )
 }
