@@ -1,0 +1,26 @@
+{
+  "name": "backend",
+  "private": "true",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "cross-env APP_MODE=development nodemon --exec ts-node src/index.ts",
+    "dev-phone": "cross-env APP_MODE=phone nodemon --exec ts-node src/index.ts",
+    "start": "cross-env APP_MODE=production node src/index.ts"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.6.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "cross-env": "^10.1.0",
+    "dotenv": "^17.4.2",
+    "nodemon": "^3.1.14",
+    "ts-node": "^10.9.2"
+  }
+}
