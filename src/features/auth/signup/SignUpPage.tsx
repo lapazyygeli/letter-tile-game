@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
+import { signup } from '../../../api/users'
+import { useMutation } from '@tanstack/react-query'
+import { ErrorToast } from '../../../components/ErrorToast'
 
 type SignUpFormData = {
   username: string
@@ -13,51 +16,59 @@ const initialFormData: SignUpFormData = {
   passwordConfirmed: '',
 }
 
-const inputs: {
-  name: keyof SignUpFormData
-  type: 'text' | 'password'
-  placeholder: string
-  autoComplete: string
-  required: boolean
-}[] = [
-  {
-    name: 'username',
-    type: 'text',
-    placeholder: 'Username',
-    autoComplete: 'off', //'username',
-    required: true,
-  },
-  {
-    name: 'password',
-    type: 'password',
-    placeholder: 'Password',
-    autoComplete: 'off', //'new-password',
-    required: true,
-  },
-  {
-    name: 'passwordConfirmed',
-    type: 'password',
-    placeholder: 'Confirm password',
-    autoComplete: 'off', //'new-password',
-    required: true,
-  },
-]
+function FormDescription() {
+  return (
+    <div className='mb-6 text-center'>
+      <h1 className='text-green-light mb-2 text-center text-3xl'>
+        Alphabet Ninja
+      </h1>
+      <p className='text-text-mutated-dark'>Create a new account.</p>
+    </div>
+  )
+}
 
-export function SignUpPage() {
+function FormNavigation() {
   const navigate = useNavigate()
-  const [formData, setFormData] = useState<SignUpFormData>(initialFormData)
-  const [error, setError] = useState<string | null>(null)
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  return (
+    <div className='mb-5 flex'>
+      <button
+        onClick={() => navigate('/auth/login')}
+        className='hover:border-green-light hover:text-green-light border-text-mutated-dark text-text-mutated-dark w-1/2 cursor-pointer border-b-2 py-4 transition-colors duration-500'
+      >
+        Login
+      </button>
+      <button className='border-green-light text-green-light w-1/2 border-b-2 py-4'>
+        Sign Up
+      </button>
+    </div>
+  )
+}
+
+/* MAIN COMPONENT */
+export function SignUpPage() {
+  const [formData, setFormData] = useState<SignUpFormData>(initialFormData)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const signupMutation = useMutation({
+    mutationFn: () =>
+      signup({ username: formData.username, password: formData.password }),
+    onSuccess: () => {
+      setErrorMessage(null)
+      setFormData(initialFormData)
+    },
+    onError: (err) => {
+      setErrorMessage(err.message)
+    },
+  })
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     if (formData.password !== formData.passwordConfirmed) {
-      setError('Passwords do not match')
+      setErrorMessage('Passwords do not match')
       return
     }
-
-    setError(null)
-    setFormData(initialFormData)
+    signupMutation.mutate()
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,49 +80,52 @@ export function SignUpPage() {
 
   return (
     <div>
-      <div className='mb-6 text-center'>
-        <h1 className='text-green-light mb-2 text-center text-3xl'>
-          Alphabet Ninja
-        </h1>
-        <p className='text-text-mutated-dark'>Create a new account.</p>
-      </div>
-      <div className='mb-5 flex'>
-        <button
-          onClick={() => navigate('/auth/login')}
-          className='hover:border-green-light hover:text-green-light border-text-mutated-dark text-text-mutated-dark w-1/2 cursor-pointer border-b-2 py-4 transition-colors duration-500'
-        >
-          Login
-        </button>
-        <button className='border-green-light text-green-light w-1/2 border-b-2 py-4'>
-          Sign Up
-        </button>
-      </div>
+      <ErrorToast
+        message={errorMessage}
+        onClose={() => setErrorMessage(null)}
+      />
+      <FormDescription />
+      <FormNavigation />
       <form onSubmit={handleSubmit}>
-        {inputs.map((input, index) => (
-          <div key={index}>
-            <input
-              name={input.name}
-              value={formData[input.name]}
-              type={input.type}
-              placeholder={input.placeholder}
-              autoComplete={input.autoComplete}
-              required={input.required}
-              onChange={handleInputChange}
-              className={
-                'bg-bg-light border-border mb-4 w-full border px-6 py-3'
-              }
-            ></input>
-          </div>
-        ))}
+        <input
+          name='username'
+          value={formData.username}
+          type='text'
+          placeholder='Username'
+          autoComplete='off'
+          required
+          onChange={handleInputChange}
+          className={`bg-bg-light mb-4 w-full border px-6 py-3 ${errorMessage ? 'border-red-500' : 'border-border'}`}
+        ></input>
+        <input
+          name='password'
+          value={formData.password}
+          type='password'
+          placeholder='Password'
+          autoComplete='off'
+          required
+          onChange={handleInputChange}
+          className={`bg-bg-light mb-4 w-full border px-6 py-3 ${errorMessage ? 'border-red-500' : 'border-border'}`}
+        ></input>
+        <input
+          name='passwordConfirmed'
+          value={formData.passwordConfirmed}
+          type='password'
+          placeholder='Confirm password'
+          autoComplete='off'
+          required
+          onChange={handleInputChange}
+          className={`bg-bg-light mb-4 w-full border px-6 py-3 ${errorMessage ? 'border-red-500' : 'border-border'}`}
+        ></input>
         <button
           type='submit'
+          disabled={signupMutation.isPending}
           className='bg-green text-text mt-4 w-full cursor-pointer rounded-lg py-3'
         >
           Sign Up
         </button>
+        <hr className='border-border mt-10 pb-0.5' />
       </form>
-      {error && <p>Error</p>}
-      <hr className='border-border mt-10 pb-0.5' />
     </div>
   )
 }

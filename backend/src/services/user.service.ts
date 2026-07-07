@@ -3,7 +3,6 @@ import { userRepository } from '../repositories/user.repository.ts'
 import { requireEnv } from '../util/get-env.ts'
 import { AuthenticationError } from '../errors/AuthenticationError.ts'
 import type { LoginReqBody, SignupReqBody } from '../routes/user.route.ts'
-import { User } from '../db/models/user.model.ts'
 import { RegistrationError } from '../errors/RegistrationError.ts'
 
 export async function authenticateUser({ username, password }: LoginReqBody) {
@@ -12,6 +11,7 @@ export async function authenticateUser({ username, password }: LoginReqBody) {
   if (!user || user.password !== password) {
     throw new AuthenticationError()
   }
+  // TODO: add role?
   const payload = { sub: user._id, name: user.username }
   const secret = requireEnv(process.env.JWT_ACCESS_TOKEN_SECRET)
   const token = jwt.sign(payload, secret, {
@@ -24,8 +24,9 @@ export async function authenticateUser({ username, password }: LoginReqBody) {
 export async function registerUser({ username, password }: SignupReqBody) {
   const existingUser = await userRepository.getUser({ username })
   if (existingUser) {
-    throw new RegistrationError()
+    throw new RegistrationError('Username is not available')
   }
+  // TODO: check password requirements, e.g. length
   const newUser = await userRepository.createUser({ username, password })
   return newUser
 }
