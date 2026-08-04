@@ -1,8 +1,11 @@
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
-import { login } from '../../../api/users'
 import { ErrorToast } from '../../../components/ErrorToast'
+import { useAuth } from '../../../hooks/useAuth'
+import { login } from '../../../api/auth'
+
+// TODO: replace buttons to Links
 
 type LoginFormData = {
   username: string
@@ -46,9 +49,15 @@ function FormNavigation() {
 /* MAIN COMPONENT */
 export function LoginPage() {
   const [formData, setFormData] = useState<LoginFormData>(initialFormData)
+  const { isGuest, playAsGuest, exitAsGuest } = useAuth()
+  const navigate = useNavigate()
+
   const loginMutation = useMutation({
-    mutationFn: (data: LoginFormData) => login(data),
-    onSuccess: (data) => {},
+    mutationFn: (credentials: LoginFormData) => login(credentials),
+    onSuccess: () => {
+      if (isGuest) exitAsGuest()
+      navigate('/dashboard')
+    },
   })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +85,7 @@ export function LoginPage() {
       />
       <FormDescription />
       <FormNavigation />
-      <form className='mb-10' onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <input
           type='text'
           placeholder='Username'
@@ -94,22 +103,23 @@ export function LoginPage() {
           onChange={handleInputChange}
         />
         <button
-          onClick={() => {}}
+          type='submit'
+          disabled={loginMutation.isPending}
           className='bg-green text-text mt-4 w-full cursor-pointer rounded-lg py-3'
         >
-          Login & Play
+          {loginMutation.isPending ? 'Logging in...' : 'Login & Play'}
         </button>
-        <hr className='border-border pb-7' />
-        <div className='text-center text-xs'>
-          <p className='text-text-mutated-dark mb-2'>Just want to try?</p>
-          <button
-            onClick={() => {}}
-            className='text-green-light cursor-pointer'
-          >
-            Play as Guest --&gt;
-          </button>
-        </div>
       </form>
+      <div className='mb-10 text-center text-xs'>
+        <hr className='border-border pb-7' />
+        <p className='text-text-mutated-dark mb-2'>Just want to try?</p>
+        <button
+          onClick={playAsGuest}
+          className='text-green-light cursor-pointer'
+        >
+          Play as Guest --&gt;
+        </button>
+      </div>
     </div>
   )
 }

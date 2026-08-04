@@ -3,7 +3,7 @@ import { AppError } from '../errors/AppError.ts'
 
 export const errorHandler: ErrorRequestHandler = (
   err: unknown,
-  req,
+  _req,
   res,
   _next,
 ) => {
@@ -12,7 +12,7 @@ export const errorHandler: ErrorRequestHandler = (
     return res.status(err.statusCode).json({ message: err.message })
   }
 
-  console.error(err)
+  console.error('[Unhandled error]', err)
 
   return res.status(500).json({ message: 'Internal server error' })
 }

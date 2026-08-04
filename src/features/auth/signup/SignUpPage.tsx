@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
-import { signup } from '../../../api/users'
 import { useMutation } from '@tanstack/react-query'
 import { ErrorToast } from '../../../components/ErrorToast'
+import { signup } from '../../../api/auth'
 
 type SignUpFormData = {
   username: string
@@ -53,10 +53,12 @@ export function SignUpPage() {
     mutationFn: () =>
       signup({ username: formData.username, password: formData.password }),
     onSuccess: () => {
-      setErrorMessage(null)
       setFormData(initialFormData)
+      setErrorMessage(null)
+      // TODO: could be routed automatically to dashboard (ofc we
+      // have to make it login automatically)
     },
-    onError: (err) => {
+    onError: (err, variables) => {
       setErrorMessage(err.message)
     },
   })
