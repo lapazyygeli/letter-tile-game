@@ -7,6 +7,7 @@
     url('./assets/fonts/Poly-Regular.ttf') format('truetype');
 }
 
+/*theme decides which utility classes exist in your project.*/
 @theme {
   --color-bg-dark: hsl(0, 0%, 0%);
   --color-bg: hsl(0, 0%, 5%);
@@ -15,6 +16,7 @@
   /*og: --color-green: hsl(120, 85%, 40%);*/
   --color-green: hsl(120, 85%, 30%);
   --color-green-light: hsl(120, 85%, 60%);
+  --color-green-primary: hsl(120, 83%, 46%);
   --color-text: hsl(0, 0%, 90%);
   --color-text-mutated: hsl(0, 0%, 70%);
   --color-text-mutated-dark: hsl(0, 0%, 50%);
@@ -31,4 +33,17 @@
     var(--color-bg-light)
   );
   --font-poly: 'Poly', sans-serif;
+
+  --animate-slide-in: slide-in 350ms ease-out forwards;
+  @keyframes slide-in {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
 }

@@ -15,7 +15,11 @@ export function useScrollToHash() {
       if (!rect) return
 
       if (rect.top >= window.innerHeight || rect.bottom <= 0) {
-        window.history.replaceState(null, '', '/')
+        window.history.replaceState(
+          null,
+          '',
+          window.location.pathname + window.location.search,
+        )
       }
     }
 
