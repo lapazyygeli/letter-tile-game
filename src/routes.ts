@@ -10,6 +10,7 @@ import { guestStore } from './lib/guestStore'
 import { DashboardPage } from './features/dashboard/DashboardPage'
 import { StatisticsPage } from './features/statistics/StatisticsPage'
 import { NotFoundPage } from './features/not-found/NotFoundPage'
+import { SinglePlayerPage } from './features/game/pages/singleplayer/SinglePlayerPage'
 
 export type PlayerAreaLoaderData = {
   user: { username: string } | null
@@ -100,6 +101,14 @@ export const router = createBrowserRouter([
             path: 'statistics',
             loader: requireAuthenticated,
             Component: StatisticsPage,
+          },
+          {
+            path: 'game',
+            children: [
+              { index: true, loader: () => redirect('/dashboard') },
+              { path: 'singleplayer', Component: SinglePlayerPage },
+              { path: 'multiplayer', Component: null },
+            ],
           },
         ],
       },
