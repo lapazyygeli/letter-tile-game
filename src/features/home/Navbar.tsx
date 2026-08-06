@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import MenuIcon from '../../assets/icons/menu_24dp_E6E6E6_FILL0_wght400_GRAD0_opsz24.svg?react'
-import CloseIcon from '../../assets/icons/close_24dp_E6E6E6_FILL0_wght400_GRAD0_opsz24.svg?react'
 import { useLockBodyScroll } from '../../hooks/useLockBodyScroll'
 import { Link } from 'react-router'
-import type { NavLink } from './types'
+import type { NavLink } from '../../types/navlink'
+import { MenuModal } from '../../components/MenuModal'
 
 type NavbarProps = {
   title?: string
@@ -15,8 +15,12 @@ export function Navbar({ title, navLinks }: NavbarProps) {
 
   useLockBodyScroll(isMenuOpen)
 
-  const handleToggleMenu = () => {
-    setIsMenuOpen((prev) => !prev)
+  const handleMenuClose = () => {
+    setIsMenuOpen(false)
+  }
+
+  const handleMenuOpen = () => {
+    setIsMenuOpen(true)
   }
 
   return (
@@ -25,7 +29,7 @@ export function Navbar({ title, navLinks }: NavbarProps) {
       <div className='bg-bg-dark md:bg-transparent'>
         <div className='mx-auto flex w-full max-w-7xl items-center justify-between px-8 py-8 md:px-16 md:py-10'>
           <span className='text-xl'>{title}</span>
-          <button className='md:hidden' onClick={handleToggleMenu}>
+          <button className='md:hidden' onClick={handleMenuOpen}>
             <MenuIcon className='h-10 w-10' />
           </button>
           <ul className='hidden items-center justify-center gap-x-5 md:flex'>
@@ -41,33 +45,14 @@ export function Navbar({ title, navLinks }: NavbarProps) {
           </ul>
         </div>
       </div>
-
       {/* TODO: Animate mobile menu open/close */}
       {/* Mobile menu when menu is open */}
-      {isMenuOpen && (
-        <div className='bg-bg-dark fixed inset-0 flex flex-col'>
-          <div className='bg-bg-dark flex items-center justify-between px-8 py-8'>
-            <span className='text-xl'>{title}</span>
-            <button onClick={handleToggleMenu}>
-              <CloseIcon className='h-10 w-10' />
-            </button>
-          </div>
-          <div className='grow'>
-            <ul className='flex h-full flex-col items-center justify-center gap-8 text-3xl'>
-              {navLinks.map((navLink, index) => (
-                <Link
-                  key={index}
-                  to={navLink.to}
-                  className='cursor-pointer hover:text-white'
-                  onClick={handleToggleMenu}
-                >
-                  {navLink.title}
-                </Link>
-              ))}
-            </ul>
-          </div>
-        </div>
-      )}
+      <MenuModal
+        isOpen={isMenuOpen}
+        onClose={handleMenuClose}
+        title={title}
+        links={navLinks}
+      />
     </nav>
   )
 }
