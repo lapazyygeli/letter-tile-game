@@ -1,15 +1,16 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 import type { LetterTile } from '../../types.ts'
 import { MIN_TILES_TO_EXCHANGE } from '../../constants.ts'
 import { TileStack } from './TileStack'
-// TODO: correct type defs
+import { useGroupedHand, type LetterGroup } from '../../hooks/useGroupedHand.ts'
+import { useGameStore } from '../../hooks/useGameStore.ts'
 
 type OpenSidebarProps = {
   hand: LetterTile[]
   bagCount: number
-  groups: [string, LetterTile[]][]
+  groups: LetterGroup[]
   canExchange: boolean
-  exchangeMode: boolean
+  isExchangeMode: boolean
   setExchangeMode: React.Dispatch<React.SetStateAction<boolean>>
   onExchange: (tileId: string) => void
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -20,7 +21,7 @@ function OpenSidebar({
   bagCount,
   groups,
   canExchange,
-  exchangeMode,
+  isExchangeMode,
   setExchangeMode,
   onExchange,
   setIsOpen,
@@ -39,7 +40,7 @@ function OpenSidebar({
             disabled={!canExchange}
             className={[
               'cursor-pointer rounded-md px-2 py-1 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-40',
-              exchangeMode
+              isExchangeMode
                 ? 'bg-amber-700 text-white'
                 : 'bg-amber-100 text-amber-800',
             ].join(' ')}
@@ -56,7 +57,7 @@ function OpenSidebar({
         </div>
       </div>
 
-      {exchangeMode && (
+      {isExchangeMode && (
         <p className='border-b border-amber-100 bg-amber-50 px-3 py-2 text-xs text-amber-700'>
           Tap a letter to replace it with three{' '}
           <br className='hidden md:inline' />
@@ -64,17 +65,14 @@ function OpenSidebar({
         </p>
       )}
 
-      <div className='flex flex-wrap gap-3 p-3 md:grid md:auto-rows-min md:grid-cols-4 md:place-items-center md:gap-3'>
+      <div className='flex flex-wrap gap-x-3 gap-y-3 p-3.5 md:grid md:auto-rows-min md:grid-cols-4 md:place-items-center'>
         {groups.map(([letter, tiles]) => (
           <TileStack
             key={letter}
             letter={letter}
             tiles={tiles}
-            exchangeMode={exchangeMode}
-            onExchange={(tileId) => {
-              onExchange(tileId)
-              setExchangeMode(false)
-            }}
+            isExchangeMode={isExchangeMode}
+            onExchange={onExchange}
           />
         ))}
       </div>
@@ -117,18 +115,28 @@ function ClosedSidebar({ hand, setIsOpen }: ClosedSidebarProps) {
 }
 
 // --- MAIN COMPONENT ---
-
-type SidebarProps = {
-  hand: LetterTile[]
-  bagCount: number
-  onExchange: (tileId: string) => void
-}
-
-export function Sidebar({ hand, bagCount, onExchange }: SidebarProps) {
+export function Sidebar() {
   const [isOpen, setIsOpen] = useState(true)
-  const [exchangeMode, setExchangeMode] = useState(false)
+  const [isExchangeMode, setExchangeMode] = useState(false)
+
+  const { exchangeTile } = useGameStore((state) => state.actions)
+  const hand = useGameStore((state) => state.hand)
+  const bagCount = useGameStore((state) => state.bag.length)
   const groups = useGroupedHand(hand)
   const canExchange = bagCount >= MIN_TILES_TO_EXCHANGE
+
+  // Stable reference across renders (as long as exchangeTile itself is
+  // stable, which it is - zustand actions are defined once in create() and
+  // never recreated). Without this, every TileStack would get a "new"
+  // onExchange prop on every Sidebar render, and the memo added to
+  // TileStack would never bail out.
+  const handleExchange = useCallback(
+    (tileId: string) => {
+      exchangeTile(tileId)
+      setExchangeMode(false)
+    },
+    [exchangeTile],
+  )
 
   return (
     <aside className={`h-full border-t border-r border-amber-200 bg-white`}>
@@ -137,9 +145,9 @@ export function Sidebar({ hand, bagCount, onExchange }: SidebarProps) {
           hand={hand}
           bagCount={bagCount}
           canExchange={canExchange}
-          exchangeMode={exchangeMode}
+          isExchangeMode={isExchangeMode}
           groups={groups}
-          onExchange={onExchange}
+          onExchange={handleExchange}
           setExchangeMode={setExchangeMode}
           setIsOpen={setIsOpen}
         />
@@ -148,16 +156,4 @@ export function Sidebar({ hand, bagCount, onExchange }: SidebarProps) {
       )}
     </aside>
   )
-}
-
-function useGroupedHand(hand: LetterTile[]): [string, LetterTile[]][] {
-  return useMemo(() => {
-    const map = new Map<string, LetterTile[]>()
-    for (const tile of hand) {
-      const group = map.get(tile.letter) ?? []
-      group.push(tile)
-      map.set(tile.letter, group)
-    }
-    return Array.from(map.entries()).sort(([a], [b]) => a.localeCompare(b))
-  }, [hand])
 }
