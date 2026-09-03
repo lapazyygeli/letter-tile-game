@@ -1,5 +1,6 @@
 import { useDraggable } from '@dnd-kit/react'
 import type { Position, TileDragData } from '../../types.ts'
+import { memo } from 'react'
 
 type DraggableTileProps = {
   id: string
@@ -12,7 +13,7 @@ type DraggableTileProps = {
  * The actual draggable tile in the game. A position / drop area where
  * the board tile is dropped is called BoardCell.
  */
-export function BoardTile({
+export function BoardTileImpl({
   id,
   letter,
   source,
@@ -46,3 +47,15 @@ export function BoardTile({
     </div>
   )
 }
+
+function areEqual(prev: DraggableTileProps, next: DraggableTileProps): boolean {
+  return (
+    prev.id === next.id &&
+    prev.letter === next.letter &&
+    prev.source === next.source &&
+    prev.position?.x === next.position?.x &&
+    prev.position?.y === next.position?.y
+  )
+}
+
+export const BoardTile = memo(BoardTileImpl, areEqual)
