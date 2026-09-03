@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import type { LetterTile } from '../../types.ts'
 import { BoardTile } from './BoardTile'
 
@@ -89,7 +90,7 @@ type TileStackProps = {
 // -- Pile of tiles for a specific letter --
 // BoardTile is the actual draggable element. When it's dragged to its final
 // position tiles variable changes and TileStack renders again with new topTile
-export function TileStack({
+function TileStackImpl({
   letter,
   tiles,
   isExchangeMode,
@@ -111,3 +112,26 @@ export function TileStack({
     </div>
   )
 }
+
+/**
+ * Bails out unless something that actually affects the rendered output
+ * changed. `tiles` is compared by reference, not by content: useGroupedHand
+ * memoizes its output on the `hand` array reference, so the same letter's
+ * tile array keeps the same identity across renders where the hand hasn't
+ * changed - reference equality here is both correct and far cheaper than
+ * comparing tile ids one by one.
+ *
+ * `onExchange` must also be a stable reference for this to have any effect
+ * - see the corresponding fix in Sidebar.tsx (useCallback instead of an
+ * inline arrow function).
+ */
+function areEqual(prev: TileStackProps, next: TileStackProps): boolean {
+  return (
+    prev.letter === next.letter &&
+    prev.tiles === next.tiles &&
+    prev.isExchangeMode === next.isExchangeMode &&
+    prev.onExchange === next.onExchange
+  )
+}
+
+export const TileStack = memo(TileStackImpl, areEqual)
