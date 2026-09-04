@@ -13,12 +13,7 @@ type DraggableTileProps = {
  * The actual draggable tile in the game. A position / drop area where
  * the board tile is dropped is called BoardCell.
  */
-export function BoardTileImpl({
-  id,
-  letter,
-  source,
-  position,
-}: DraggableTileProps) {
+function BoardTileImpl({ id, letter, source, position }: DraggableTileProps) {
   const data: TileDragData = {
     type: 'tile',
     tileId: id,
