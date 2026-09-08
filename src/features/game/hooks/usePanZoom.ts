@@ -9,6 +9,30 @@ type BoardView = {
   zoom: number
 }
 
+const PAN_IGNORE_SELECTOR = '[data-tile-handle], [data-pan-ignore]'
+
+function capturePointerSafely(element: HTMLElement, pointerId: number) {
+  try {
+    element.setPointerCapture(pointerId)
+  } catch (error) {
+    if (import.meta.env.DEV) {
+      console.debug('usePanZoom: setPointerCapture failed', error)
+    }
+  }
+}
+
+function releasePointerCaptureSafely(element: HTMLElement, pointerId: number) {
+  try {
+    if (element.hasPointerCapture(pointerId)) {
+      element.releasePointerCapture(pointerId)
+    }
+  } catch (error) {
+    if (import.meta.env.DEV) {
+      console.debug('usePanZoom: releasePointerCapture failed', error)
+    }
+  }
+}
+
 /**
  * The coordinate system works so that:
  * - the horizontal axis goes from left to right, from negative to positive
@@ -125,6 +149,40 @@ export function usePanZoom(viewportRef: RefObject<HTMLDivElement | null>) {
     const viewportDiv = viewportRef.current
     if (!viewportDiv) return
 
+    const clearPointer = (pointerId: number) => {
+      pointers.current.delete(pointerId)
+
+      if (pointers.current.size < 2) {
+        pinchStartDistance.current = null
+      }
+
+      if (pointers.current.size === 0) {
+        panStart.current = null
+        return
+      }
+
+      // Going from a two-finger pinch back to one finger. Rebaseline pan
+      // using the remaining pointer's last known position and the boardView's
+      // current (post-zoom) position. Without this, panStart still holds the
+      // value from before the pinch started and the next move jumps the
+      // boardView by a large random amount.
+      if (pointers.current.size === 1) {
+        const [remaining] = Array.from(pointers.current.values())
+        panStart.current = {
+          pointerX: remaining.x,
+          pointerY: remaining.y,
+          boardX: boardViewRef.current.origin.x,
+          boardY: boardViewRef.current.origin.y,
+        }
+      }
+    }
+
+    const clearAllPointers = () => {
+      pointers.current.clear()
+      pinchStartDistance.current = null
+      panStart.current = null
+    }
+
     /**
      * Find the cursor's x and y coordinates in our own coordinate system.
      * (Converts the cursor position from the browser's client coordinate
@@ -167,12 +225,7 @@ export function usePanZoom(viewportRef: RefObject<HTMLDivElement | null>) {
     }
 
     const handlePointerDown = (event: PointerEvent) => {
-      // Ignore pointerdown events that start on a draggable element
-      // React's synthetic event bubbling only occurs at the React root, which is
-      // above this node. By that point, the native event has already bubbled
-      // up to this level before React's stopPropagation executes.
-      // Checking the attribute is therefore the only reliable way to filter these out.
-      if ((event.target as HTMLElement | null)?.closest('[data-tile-handle]')) {
+      if ((event.target as HTMLElement | null)?.closest(PAN_IGNORE_SELECTOR)) {
         return
       }
 
@@ -182,6 +235,11 @@ export function usePanZoom(viewportRef: RefObject<HTMLDivElement | null>) {
       if (event.pointerType === 'mouse') {
         event.preventDefault()
       }
+
+      // Guarantees pointerup/pointercancel/lostpointercapture will fire for
+      // this exact pointerId even if the finger moves outside the viewport
+      // or onto another element
+      capturePointerSafely(viewportDiv, event.pointerId)
 
       pointers.current.set(event.pointerId, {
         x: event.clientX,
@@ -209,9 +267,7 @@ export function usePanZoom(viewportRef: RefObject<HTMLDivElement | null>) {
 
       // Handle situtations where mouse button released outside the viewport
       if (event.pointerType !== 'touch' && event.buttons === 0) {
-        pointers.current.delete(event.pointerId)
-        if (pointers.current.size < 2) pinchStartDistance.current = null
-        if (pointers.current.size === 0) panStart.current = null
+        clearPointer(event.pointerId)
         return
       }
 
@@ -249,45 +305,39 @@ export function usePanZoom(viewportRef: RefObject<HTMLDivElement | null>) {
     }
 
     const handlePointerUp = (event: PointerEvent) => {
-      pointers.current.delete(event.pointerId)
+      releasePointerCaptureSafely(viewportDiv, event.pointerId)
+      clearPointer(event.pointerId)
+    }
 
-      if (pointers.current.size < 2) {
-        pinchStartDistance.current = null
-      }
+    const handleLostPointerCapture = (event: PointerEvent) => {
+      clearPointer(event.pointerId)
+    }
 
-      if (pointers.current.size === 0) {
-        panStart.current = null
-        return
-      }
-
-      // Going from a two-finger pinch back to one finger: re-baseline pan
-      // using the remaining pointer's last known position and the boardView's
-      // current (post-zoom) position. Without this, panStart still holds the
-      // value from before the pinch started and the next move jumps the
-      // boardView by a large, seemingly random amount.
-      if (pointers.current.size === 1) {
-        const [remaining] = Array.from(pointers.current.values())
-        panStart.current = {
-          pointerX: remaining.x,
-          pointerY: remaining.y,
-          boardX: boardViewRef.current.origin.x,
-          boardY: boardViewRef.current.origin.y,
-        }
-      }
+    const handleBlurOrHide = () => {
+      clearAllPointers()
     }
 
     viewportDiv.addEventListener('wheel', handleWheel, { passive: false })
     viewportDiv.addEventListener('pointerdown', handlePointerDown)
+    viewportDiv.addEventListener('lostpointercapture', handleLostPointerCapture)
     window.addEventListener('pointermove', handlePointerMove)
     window.addEventListener('pointerup', handlePointerUp)
     window.addEventListener('pointercancel', handlePointerUp)
+    window.addEventListener('blur', handleBlurOrHide)
+    document.addEventListener('visibilitychange', handleBlurOrHide)
 
     return () => {
       viewportDiv.removeEventListener('wheel', handleWheel)
       viewportDiv.removeEventListener('pointerdown', handlePointerDown)
+      viewportDiv.removeEventListener(
+        'lostpointercapture',
+        handleLostPointerCapture,
+      )
       window.removeEventListener('pointermove', handlePointerMove)
       window.removeEventListener('pointerup', handlePointerUp)
       window.removeEventListener('pointercancel', handlePointerUp)
+      window.removeEventListener('blur', handleBlurOrHide)
+      document.removeEventListener('visibilitychange', handleBlurOrHide)
     }
   }, [viewportRef, zoomBy])
 
