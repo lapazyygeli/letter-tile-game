@@ -2,6 +2,7 @@ import { useDroppable } from '@dnd-kit/react'
 import { CELL_SIZE } from '../../constants'
 import type { CellDropData, PlacedTile, Position } from '../../types'
 import { BoardTile } from '../sidebar/BoardTile'
+import { memo } from 'react'
 
 type BoardCellProps = {
   pos: Position
@@ -22,7 +23,7 @@ type BoardCellProps = {
  *
  */
 
-export function BoardCell({ pos, tile, isInvalid }: BoardCellProps) {
+function BoardCellImpl({ pos, tile, isInvalid }: BoardCellProps) {
   const data: CellDropData = { type: 'cell', position: pos }
 
   const { isDropTarget, ref } = useDroppable({
@@ -57,3 +58,14 @@ export function BoardCell({ pos, tile, isInvalid }: BoardCellProps) {
     </div>
   )
 }
+
+function areEqual(prev: BoardCellProps, next: BoardCellProps): boolean {
+  return (
+    prev.pos.x === next.pos.x &&
+    prev.pos.y === next.pos.y &&
+    prev.tile === next.tile &&
+    prev.isInvalid === next.isInvalid
+  )
+}
+
+export const BoardCell = memo(BoardCellImpl, areEqual)
