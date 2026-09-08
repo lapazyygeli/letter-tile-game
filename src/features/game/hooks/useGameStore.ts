@@ -5,7 +5,6 @@ import { HAND_SIZE, MIN_TILES_TO_EXCHANGE } from '../constants'
 import { getTileAt, placeTileAt, removeTileAt } from '../engine/board'
 import type {
   GameResult,
-  GameStatus,
   LetterTile,
   PlacedTile,
   PlacedTileMap,
@@ -13,6 +12,15 @@ import type {
 } from '../types'
 import { loadDictionary } from '../engine/dictionary'
 import { evaluateBoard } from '../engine/util'
+
+export const GAME_STATUS = {
+  IDLE: 'idle',
+  PLAYING: 'playing',
+  WON: 'won',
+  LOST: 'lost',
+} as const
+
+export type GameStatus = (typeof GAME_STATUS)[keyof typeof GAME_STATUS]
 
 type GameStoreState = {
   status: GameStatus
@@ -50,7 +58,7 @@ type GameStore = GameStoreState & {
 }
 
 const initialState: GameStoreState = {
-  status: 'idle',
+  status: GAME_STATUS.IDLE,
   hand: [],
   board: {},
   bag: [],
@@ -74,7 +82,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const { drawn, remaining } = drawTiles(createTileBag(), HAND_SIZE)
       set({
         ...initialState,
-        status: 'playing',
+        status: GAME_STATUS.PLAYING,
         hand: drawn,
         bag: remaining,
         dictionary,
@@ -235,7 +243,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       const result: GameResult = {
         mode: 'singleplayer',
-        outcome: 'won',
+        outcome: GAME_STATUS.WON,
         durationSeconds: elapsedSeconds,
         wordsFormed: evaluation.words.map(({ word }) => word),
         tilesPlaced: Object.keys(board).length,
@@ -244,7 +252,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }
 
       set({
-        status: 'won',
+        status: GAME_STATUS.WON,
         invalidCells: [],
         lastResult: result,
       })
