@@ -1,3 +1,4 @@
+import { Types } from 'mongoose'
 import { RefreshToken } from '../db/models/refresh-token.model.ts'
 
 async function createRefreshToken({
@@ -6,7 +7,7 @@ async function createRefreshToken({
   expiresAt,
 }: {
   tokenHash: string
-  userId: string
+  userId: string | Types.ObjectId
   expiresAt: Date
 }) {
   const refreshToken = new RefreshToken({ tokenHash, userId, expiresAt })
