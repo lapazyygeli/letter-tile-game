@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
-import { GAME_STATUS, useGameStore } from './useGameStore'
+import { useGameStore } from './useGameStore'
+import { GAME_STATUS } from '../types'
 
 export function useGameTimer() {
   const status = useGameStore((state) => state.status)

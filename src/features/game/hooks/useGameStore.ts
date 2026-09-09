@@ -3,24 +3,17 @@ import { create } from 'zustand'
 import { createTileBag, drawTiles } from '../engine/distribution'
 import { HAND_SIZE, MIN_TILES_TO_EXCHANGE } from '../constants'
 import { getTileAt, placeTileAt, removeTileAt } from '../engine/board'
-import type {
-  GameResult,
-  LetterTile,
-  PlacedTile,
-  PlacedTileMap,
-  Position,
+import {
+  GAME_STATUS,
+  type GameResult,
+  type GameStatus,
+  type LetterTile,
+  type PlacedTile,
+  type PlacedTileMap,
+  type Position,
 } from '../types'
 import { loadDictionary } from '../engine/dictionary'
 import { evaluateBoard } from '../engine/util'
-
-export const GAME_STATUS = {
-  IDLE: 'idle',
-  PLAYING: 'playing',
-  WON: 'won',
-  LOST: 'lost',
-} as const
-
-export type GameStatus = (typeof GAME_STATUS)[keyof typeof GAME_STATUS]
 
 type GameStoreState = {
   status: GameStatus
