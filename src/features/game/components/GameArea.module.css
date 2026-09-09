@@ -1,0 +1,32 @@
+.grid {
+  display: grid;
+  grid-template-areas:
+    'header header header'
+    'board  board  board'
+    'sidebar sidebar sidebar';
+  grid-template-columns: 1fr;
+  grid-template-rows: 4rem 1fr auto;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-areas:
+      'header  header header'
+      'sidebar board  board '
+      'sidebar board  board ';
+    grid-template-columns: auto 1fr;
+    grid-template-rows: 4rem /*64px*/ 1fr;
+  }
+}
+
+.header {
+  grid-area: header;
+}
+
+.sidebar {
+  grid-area: sidebar;
+}
+
+.board {
+  grid-area: board;
+}

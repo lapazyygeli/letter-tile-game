@@ -1,7 +1,7 @@
 import { Navbar } from './Navbar'
 import { Hero } from './Hero'
 import { AboutPage } from '../about/AboutPage'
-import type { NavLink } from './types'
+import type { NavLink } from '../../types/navlink'
 import { useNavigate } from 'react-router'
 
 const navLinks: NavLink[] = [
