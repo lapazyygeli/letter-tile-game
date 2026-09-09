@@ -46,6 +46,7 @@ export function DashboardPage() {
               Play against computer with adjustable difficulty levels.
             </p>
             <button
+              onClick={() => navigate('/game/singleplayer')}
               className='bg-green-primary text-bg-dark mt-auto cursor-pointer rounded-lg px-6.25 py-2.5 hover:opacity-80'
               type='button'
             >
