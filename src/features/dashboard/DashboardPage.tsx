@@ -14,7 +14,7 @@ export function DashboardPage() {
   const logoutMutation = useMutation({
     mutationFn: logout,
     onSuccess: () => {
-      if (isGuest) exitAsGuest()
+      exitAsGuest()
       navigate('/')
     },
   })

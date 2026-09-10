@@ -49,13 +49,13 @@ function FormNavigation() {
 /* MAIN COMPONENT */
 export function LoginPage() {
   const [formData, setFormData] = useState<LoginFormData>(initialFormData)
-  const { isGuest, playAsGuest, exitAsGuest } = useAuth()
+  const { playAsGuest, exitAsGuest } = useAuth()
   const navigate = useNavigate()
 
   const loginMutation = useMutation({
     mutationFn: (credentials: LoginFormData) => login(credentials),
     onSuccess: () => {
-      if (isGuest) exitAsGuest()
+      exitAsGuest()
       navigate('/dashboard')
     },
   })
