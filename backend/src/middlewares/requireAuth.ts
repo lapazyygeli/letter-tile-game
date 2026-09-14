@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from 'express'
+import type { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
-import { requireEnv } from '../util/get-env'
+import { requireEnv } from '../util/get-env.ts'
 
 type AuthPayload = {
   sub: string
