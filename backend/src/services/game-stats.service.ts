@@ -1,4 +1,4 @@
-import { GameMode } from '../db/models/game-stats.model.ts'
+import { type GameMode } from '../db/models/game-stats.model.ts'
 import {
   gameStatsRepository,
   type LeaderboardEntry,
