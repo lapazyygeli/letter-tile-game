@@ -5,6 +5,7 @@ import { errorHandler } from './middlewares/errorHandler.ts'
 import { authRoutes } from './routes/auth.route.ts'
 import { apiReqLimiter } from './middlewares/apiReqLimiter.ts'
 import helmet from 'helmet'
+import { gameStatsRoutes } from './routes/game-stats.route.ts'
 
 const app = express()
 
@@ -20,6 +21,7 @@ app.use(cookieParser())
 app.use(apiReqLimiter)
 
 authRoutes(app)
+gameStatsRoutes(app)
 
 app.use((_req, res) => {
   res.status(404).json({
