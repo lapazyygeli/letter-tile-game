@@ -1,7 +1,12 @@
 import { create } from 'zustand'
 
 import { createTileBag, drawTiles } from '../engine/distribution'
-import { HAND_SIZE, MIN_TILES_TO_EXCHANGE } from '../constants'
+import {
+  HAND_SIZE,
+  MIN_TILES_TO_EXCHANGE,
+  SINGLEPLAYER_RULESET_VERSION,
+  TOTAL_TILE_COUNT,
+} from '../constants'
 import { getTileAt, placeTileAt, removeTileAt } from '../engine/board'
 import {
   GAME_STATUS,
@@ -16,6 +21,9 @@ import { loadDictionary } from '../engine/dictionary'
 import { evaluateBoard } from '../engine/util'
 
 type GameStoreState = {
+  // GAME_STATUS.<MODE> is the internal render-state, a separate
+  // concept from GameResult's GameOutcome, which is what actually
+  // gets persisted. See the comment on GameOutcome in types.ts.
   status: GameStatus
   hand: LetterTile[] // the cards that the user's having currectly
   board: PlacedTileMap
@@ -236,11 +244,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       const result: GameResult = {
         mode: 'singleplayer',
-        outcome: GAME_STATUS.WON,
+        outcome: 'completed',
         durationSeconds: elapsedSeconds,
         wordsFormed: evaluation.words.map(({ word }) => word),
         tilesPlaced: Object.keys(board).length,
-        tilesInHand: hand.length,
+        settings: { handSize: HAND_SIZE, totalTiles: TOTAL_TILE_COUNT },
+        rulesetVersion: SINGLEPLAYER_RULESET_VERSION,
         timestamp: new Date().toISOString(),
       }
 
