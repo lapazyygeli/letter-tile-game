@@ -1,4 +1,4 @@
-import { GAME_STATUS, type GameResult } from '../../types.ts'
+import type { GameResult } from '../../types.ts'
 
 type GameEndModalProps = {
   result: GameResult
@@ -15,7 +15,7 @@ export function GameEndModal({
     <div className='fixed inset-0 z-10 flex items-center justify-center bg-black/50 p-4'>
       <div className='w-full max-w-sm rounded-lg bg-white p-6 shadow-xl'>
         <h2 className='text-xl font-bold text-amber-900'>
-          {result.outcome === GAME_STATUS.WON ? 'You won!' : 'Game over'}
+          {getHeading(result.outcome)}
         </h2>
 
         <dl className='mt-4 space-y-2 text-sm text-amber-800'>
@@ -31,14 +31,14 @@ export function GameEndModal({
           <button
             type='button'
             onClick={onPlayAgain}
-            className='flex-1 rounded-md bg-amber-700 py-2 text-white'
+            className='flex-1 cursor-pointer rounded-md bg-amber-700 py-2 text-white'
           >
             Play again
           </button>
           <button
             type='button'
             onClick={onBackToMenu}
-            className='flex-1 rounded-md border border-amber-300 py-2 text-amber-800'
+            className='flex-1 cursor-pointer rounded-md border border-amber-300 py-2 text-amber-800'
           >
             Back to menu
           </button>
@@ -46,6 +46,17 @@ export function GameEndModal({
       </div>
     </div>
   )
+}
+
+function getHeading(outcome: GameResult['outcome']): string {
+  switch (outcome) {
+    case 'completed':
+      return 'Board complete!'
+    case 'won':
+      return 'You won!'
+    case 'lost':
+      return 'Game over'
+  }
 }
 
 function Stat({ label, value }: { label: string; value: string }) {
