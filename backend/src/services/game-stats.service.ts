@@ -62,7 +62,7 @@ export async function saveGameStats(userId: string, body: SaveGameStatsBody) {
 export async function getMyStatistics(userId: string): Promise<MyStatistics> {
   const [singleplayer, recentGames] = await Promise.all([
     gameStatsRepository.getSingleplayerUserSummary(userId),
-    gameStatsRepository.getRecentGames(userId, 'singleplayer', 20),
+    gameStatsRepository.getRecentGames(userId, 'singleplayer', 10),
   ])
   return { singleplayer, recentGames }
 }
