@@ -23,14 +23,26 @@ export function DashboardPage() {
   return (
     <div className='bg-bg-dark min-h-screen'>
       <div className='inset-x-0 min-[508px]:absolute'>
-        <nav className='mx-auto flex max-w-7xl justify-center gap-4 px-16 py-10 md:justify-end'>
-          {user && <Link to='/statistics'>Statistics</Link>}
-          <a href='#how-to-play'>How to play</a>
+        <nav className='mx-auto flex max-w-7xl justify-center gap-4 px-8 py-10 sm:px-16 md:justify-end'>
+          {user && (
+            <Link
+              to='/statistics'
+              className='after:block after:h-0.5 after:w-full after:origin-left after:scale-0 after:bg-white after:transition-transform after:duration-300 after:ease-in-out after:content-[""] hover:text-white hover:after:scale-100'
+            >
+              Statistics
+            </Link>
+          )}
+          <a
+            href='#how-to-play'
+            className='after:block after:h-0.5 after:w-full after:origin-left after:scale-0 after:bg-white after:transition-transform after:duration-300 after:ease-in-out after:content-[""] hover:text-white hover:after:scale-100'
+          >
+            How to play
+          </a>
           <button
             type='button'
             onClick={() => logoutMutation.mutate()}
             disabled={logoutMutation.isPending}
-            className='cursor-pointer'
+            className='cursor-pointer after:block after:h-0.5 after:w-full after:origin-left after:scale-0 after:bg-white after:transition-transform after:duration-300 after:ease-in-out after:content-[""] hover:text-white hover:after:scale-100'
           >
             {logoutMutation.isPending ? 'Logging out...' : 'Logout'}
           </button>
