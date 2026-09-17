@@ -50,6 +50,10 @@ export function GameArea({ onGameEnd, onBackToMenu }: GameAreaProps) {
     [checkWords, onGameEnd],
   )
 
+  const handlePlayAgain = useCallback(() => {
+    start()
+  }, [start])
+
   if (status === GAME_STATUS.IDLE) {
     return (
       <div className='flex h-full items-center justify-center text-amber-700'>
@@ -95,7 +99,7 @@ export function GameArea({ onGameEnd, onBackToMenu }: GameAreaProps) {
       {status === GAME_STATUS.WON && lastResult && (
         <GameEndModal
           result={lastResult}
-          onPlayAgain={onBackToMenu}
+          onPlayAgain={handlePlayAgain}
           onBackToMenu={onBackToMenu}
         />
       )}
