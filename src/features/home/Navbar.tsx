@@ -7,10 +7,11 @@ import { MenuModal } from '../../components/MenuModal'
 
 type NavbarProps = {
   title?: string
+  logo?: string
   navLinks: NavLink[]
 }
 
-export function Navbar({ title, navLinks }: NavbarProps) {
+export function Navbar({ title, logo, navLinks }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   useLockBodyScroll(isMenuOpen)
@@ -25,13 +26,20 @@ export function Navbar({ title, navLinks }: NavbarProps) {
 
   return (
     <nav className='fixed top-0 right-0 left-0 md:absolute'>
-      {/* Default menu for desktop and mobile (when not open = default) */}
       <div className='bg-bg-dark md:bg-transparent'>
         <div className='mx-auto flex w-full max-w-7xl items-center justify-between px-8 py-8 md:px-16 md:py-10'>
-          <span className='text-xl'>{title}</span>
+          <div className='flex items-center gap-0'>
+            {logo && (
+              <img src={logo} alt='' className='h-8 w-auto object-contain' />
+            )}
+
+            {title && <span className='text-xl'>{title}</span>}
+          </div>
+
           <button className='md:hidden' onClick={handleMenuOpen}>
             <MenuIcon className='h-10 w-10' />
           </button>
+
           <ul className='hidden items-center justify-center gap-x-5 md:flex'>
             {navLinks.map((navLink, index) => (
               <Link
