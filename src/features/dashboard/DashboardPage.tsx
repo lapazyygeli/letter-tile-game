@@ -22,7 +22,7 @@ export function DashboardPage() {
 
   return (
     <div className='bg-bg-dark min-h-screen'>
-      <div className='inset-x-0 min-[508px]:absolute'>
+      <div className='inset-x-0 min-[540px]:absolute'>
         <nav className='mx-auto flex max-w-7xl justify-center gap-4 px-8 py-10 sm:px-16 md:justify-end'>
           {user && (
             <Link
@@ -49,8 +49,8 @@ export function DashboardPage() {
         </nav>
       </div>
 
-      <div className='flex min-h-screen items-center justify-center'>
-        <div className='grid w-full max-w-3xl grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-11 px-8 sm:p-8'>
+      <div className='flex min-h-screen items-center justify-center max-[540px]:min-h-[90vh] max-[540px]:flex-col max-[540px]:justify-start'>
+        <div className='grid w-full max-w-3xl grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-11 p-8'>
           <div className='border-t-border-hightlight bg-bg-gradient-hover border-border flex flex-col items-center rounded-lg border p-8'>
             <span className='text-[50px]'>🧍‍♂️</span>
             <h2 className='mb-4 text-3xl'>Singleplayer</h2>
@@ -67,7 +67,7 @@ export function DashboardPage() {
           </div>
           <div className='relative flex flex-col'>
             <div className='from-green/20 absolute inset-0 bg-linear-to-tr via-black/30 to-transparent' />
-            <div className='border-t-border-hightlight bg-bg-gradient-hover border-border flex flex-col items-center rounded-lg border p-8'>
+            <div className='border-t-border-hightlight bg-bg-gradient-hover border-border flex h-full flex-col items-center rounded-lg border p-8'>
               <span className='text-[50px]'>👥</span>
               <h2 className='mb-4 text-3xl'>Multiplayer</h2>
               <p className='text-text-mutated mb-4 min-h-12 text-center'>
