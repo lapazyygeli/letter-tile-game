@@ -1,24 +1,36 @@
+import type { GameAreaTheme } from '../hooks/useGameAreaTheme'
 import { useGameStore } from '../hooks/useGameStore'
+import { ThemeToggleButton } from './ThemeToggleButton'
 
 type GameHeaderProps = {
   onCheck: () => void
   onOpenMenu: () => void
+  theme: GameAreaTheme
+  onToggleTheme: () => void
 }
 
-export function GameHeader({ onCheck, onOpenMenu }: GameHeaderProps) {
+export function GameHeader({
+  onCheck,
+  onOpenMenu,
+  theme,
+  onToggleTheme,
+}: GameHeaderProps) {
   const elapsedSeconds = useGameStore((state) => state.elapsedSeconds)
 
   return (
-    <header className='flex h-full items-center justify-between border-b border-amber-200 bg-white px-4'>
-      <button
-        type='button'
-        onClick={onOpenMenu}
-        className='cursor-pointer text-xl text-amber-700'
-      >
-        ☰
-      </button>
+    <header className='border-gamearea-border bg-gamearea-bg flex h-full items-center justify-between border-b px-4'>
+      <div className='flex gap-3'>
+        <button
+          type='button'
+          onClick={onOpenMenu}
+          className='text-gamearea-header-text cursor-pointer text-xl'
+        >
+          ☰
+        </button>
+        <ThemeToggleButton theme={theme} onToggle={onToggleTheme} />
+      </div>
 
-      <span className='font-mono text-lg text-amber-900'>
+      <span className='text-gamearea-header-text font-mono text-[15px] min-[350px]:text-[16px] sm:text-lg'>
         Elapsed time: {formatTime(elapsedSeconds)}
       </span>
 

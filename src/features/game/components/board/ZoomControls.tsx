@@ -12,14 +12,14 @@ export function ZoomControls({ onZoomIn, onZoomOut }: ZoomControlsProps) {
       <button
         type='button'
         onClick={onZoomIn}
-        className='h-10 w-10 cursor-pointer rounded-full bg-white text-lg font-bold text-amber-900 shadow ring-1 ring-amber-200'
+        className='text-gamearea-card-text ring-gamearea-card-border bg-gamearea-bg h-10 w-10 cursor-pointer rounded-full text-lg font-bold shadow ring-1'
       >
         +
       </button>
       <button
         type='button'
         onClick={onZoomOut}
-        className='h-10 w-10 cursor-pointer rounded-full bg-white text-lg font-bold text-amber-900 shadow ring-1 ring-amber-200'
+        className='text-gamearea-card-text ring-gamearea-card-border bg-gamearea-bg h-10 w-10 cursor-pointer rounded-full text-lg font-bold shadow ring-1'
       >
         −
       </button>

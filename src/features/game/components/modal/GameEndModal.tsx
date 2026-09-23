@@ -13,12 +13,12 @@ export function GameEndModal({
 }: GameEndModalProps) {
   return (
     <div className='fixed inset-0 z-10 flex items-center justify-center bg-black/50 p-4'>
-      <div className='w-full max-w-sm rounded-lg bg-white p-6 shadow-xl'>
-        <h2 className='text-xl font-bold text-amber-900'>
+      <div className='bg-gamearea-endmodal border-gamearea-border w-full max-w-sm rounded-lg border p-6 shadow-xl'>
+        <h2 className='text-gamearea-card-text text-xl font-bold'>
           {getHeading(result.outcome)}
         </h2>
 
-        <dl className='mt-4 space-y-2 text-sm text-amber-800'>
+        <dl className='text-gamearea-card-text/90 mt-4 space-y-2 text-sm'>
           <Stat label='Time' value={formatDuration(result.durationSeconds)} />
           <Stat
             label='Words formed'
@@ -31,14 +31,14 @@ export function GameEndModal({
           <button
             type='button'
             onClick={onPlayAgain}
-            className='flex-1 cursor-pointer rounded-md bg-amber-700 py-2 text-white'
+            className='bg-gamearea-board flex-1 cursor-pointer rounded-md py-2 text-white'
           >
             Play again
           </button>
           <button
             type='button'
             onClick={onBackToMenu}
-            className='flex-1 cursor-pointer rounded-md border border-amber-300 py-2 text-amber-800'
+            className='border-gamearea-card-text text-gamearea-card-text flex-1 cursor-pointer rounded-md border py-2'
           >
             Back to menu
           </button>

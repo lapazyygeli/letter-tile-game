@@ -53,7 +53,7 @@ export function Board({ activeDragPosition, dragSourcePosition }: BoardProps) {
     <div
       ref={viewportRef}
       onDragStart={(event) => event.preventDefault()}
-      className='relative h-full w-full touch-none overflow-hidden select-none'
+      className='bg-gamearea-bg relative h-full w-full touch-none overflow-hidden select-none'
     >
       <div
         ref={worldRef}

@@ -34,6 +34,21 @@
   );
   --font-poly: 'Poly', sans-serif;
 
+  /*GAMEAREA*/
+  --color-gamearea-bg: hsl(0, 0%, 5%);
+  --color-gamearea-board: hsl(120, 100%, 30%);
+  --color-gamearea-border: hsl(0, 0%, 15%);
+  --color-gamearea-card: hsl(0, 0%, 13%);
+  --color-gamearea-card-border: hsl(0, 0%, 17%);
+  --color-gamearea-card-text: hsl(0, 0%, 75%);
+  --color-gamearea-change-btn: hsl(0, 0%, 10%);
+  --color-gamearea-change-btn-text: hsl(0, 0%, 90%);
+  --color-gamearea-header-text: hsl(0, 0%, 75%);
+  --color-drag-hover: hsla(120, 100%, 28%, 0.235);
+  --color-gamearea-endmodal: hsl(0, 0%, 12%);
+
+  /*GAMEAREA*/
+
   --animate-slide-in: slide-in 350ms ease-out forwards;
   @keyframes slide-in {
     0% {
@@ -46,4 +61,18 @@
       opacity: 1;
     }
   }
+}
+
+[data-gamearea-theme='light'] {
+  --color-gamearea-bg: hsl(0, 0%, 96%);
+  --color-gamearea-board: oklch(41.4% 0.112 45.904);
+  --color-gamearea-border: hsl(0, 0%, 85%);
+  --color-gamearea-card: oklch(96.2% 0.059 95.617);
+  --color-gamearea-card-border: oklch(87.9% 0.169 91.605);
+  --color-gamearea-card-text: oklch(41.4% 0.112 45.904);
+  --color-gamearea-change-btn: hsl(0, 0%, 90%);
+  --color-gamearea-change-btn-text: hsl(0, 0%, 15%);
+  --color-gamearea-header-text: oklch(41.4% 0.112 45.904);
+  --color-drag-hover: hsla(120, 55%, 32%, 0.18);
+  --color-gamearea-endmodal: hsl(0, 0%, 96%);
 }
