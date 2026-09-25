@@ -18,9 +18,7 @@ export function useGameAreaTheme() {
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, theme)
-    } catch {
-      // Teema toimii silti tämän istunnon ajan.
-    }
+    } catch {}
   }, [theme])
 
   const toggleTheme = useCallback(() => {
