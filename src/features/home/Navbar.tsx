@@ -36,7 +36,11 @@ export function Navbar({ title, logo, navLinks }: NavbarProps) {
             {title && <span className='text-xl'>{title}</span>}
           </div>
 
-          <button className='md:hidden' onClick={handleMenuOpen}>
+          <button
+            className='md:hidden'
+            onClick={handleMenuOpen}
+            aria-label='Open menu'
+          >
             <MenuIcon className='h-10 w-10' />
           </button>
 
