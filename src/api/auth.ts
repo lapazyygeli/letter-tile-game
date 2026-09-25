@@ -64,9 +64,12 @@ export async function refresh(): Promise<string | null> {
 
 // Remove the access token and the refresh token
 export async function logout(): Promise<void> {
-  await fetch(`${API_URL}/auth/logout`, {
-    method: 'POST',
-    credentials: 'include',
-  })
-  tokenStore.set(null)
+  try {
+    await fetch(`${API_URL}/auth/logout`, {
+      method: 'POST',
+      credentials: 'include',
+    })
+  } finally {
+    tokenStore.set(null)
+  }
 }
