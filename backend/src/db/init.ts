@@ -1,10 +1,8 @@
 import mongoose from 'mongoose'
-import { requireEnv } from '../util/get-env.ts'
+import { env } from '../config/env.ts'
 
 export async function initDatabase() {
-  const DATABASE_URL = requireEnv(process.env.DATABASE_URL)
-  mongoose.connection.on('open', () => {
-    console.info('successfully connected to database:', DATABASE_URL)
-  })
-  await mongoose.connect(DATABASE_URL)
+  mongoose.set('sanitizeFilter', true)
+  await mongoose.connect(env.DATABASE_URL, { serverSelectionTimeoutMS: 10_000 })
+  console.info('connected to database')
 }
