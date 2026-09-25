@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import crypto from 'crypto'
-import { requireEnv } from './get-env.ts'
+import { env } from '../config/env.ts'
 
 const ACCESS_TOKEN_TTL = '15m'
 
@@ -14,7 +14,7 @@ export function hashToken(plainToken: string): string {
 }
 
 export function issueAccessToken(userId: string, username: string): string {
-  const secret = requireEnv(process.env.JWT_ACCESS_TOKEN_SECRET)
+  const secret = env.JWT_ACCESS_TOKEN_SECRET
   const payload = { sub: userId, name: username }
   return jwt.sign(payload, secret, {
     algorithm: 'HS256',

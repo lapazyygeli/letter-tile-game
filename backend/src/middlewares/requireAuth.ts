@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
-import { requireEnv } from '../util/get-env.ts'
+import { env } from '../config/env.ts'
 
 type AuthPayload = {
   sub: string
@@ -25,7 +25,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
   }
   jwt.verify(
     token,
-    requireEnv(process.env.JWT_ACCESS_TOKEN_SECRET),
+    env.JWT_ACCESS_TOKEN_SECRET,
     { algorithms: ['HS256'] },
     (err, payload) => {
       if (err) {

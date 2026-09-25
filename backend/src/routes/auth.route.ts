@@ -14,12 +14,13 @@ import {
   type LoginBody,
   type SignupBody,
 } from '../schemas/auth.schema.ts'
+import { env } from '../config/env.ts'
 
 const REFRESH_COOKIE = 'refreshToken'
 
 const cookieOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
+  secure: env.NODE_ENV === 'production',
   // prevents the browser from sending the
   // cookie with cross-site requests.
   sameSite: 'strict' as const,
