@@ -1,6 +1,6 @@
 import { Link, useNavigate, useRouteLoaderData } from 'react-router'
 import { logout } from '../../api/auth'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '../../hooks/useAuth'
 import { AboutSection } from '../../components/AboutSection'
 import type { PlayerAreaLoaderData } from '../../routes'
@@ -11,11 +11,13 @@ export function DashboardPage() {
   ) as PlayerAreaLoaderData
   const { exitAsGuest } = useAuth()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   const logoutMutation = useMutation({
     mutationFn: logout,
     onSuccess: () => {
       exitAsGuest()
+      queryClient.clear()
       navigate('/')
     },
   })

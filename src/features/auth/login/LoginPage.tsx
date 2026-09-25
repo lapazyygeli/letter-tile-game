@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { ErrorToast } from '../../../components/ErrorToast'
@@ -51,11 +51,13 @@ export function LoginPage() {
   const [formData, setFormData] = useState<LoginFormData>(initialFormData)
   const { playAsGuest, exitAsGuest } = useAuth()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   const loginMutation = useMutation({
     mutationFn: (credentials: LoginFormData) => login(credentials),
     onSuccess: () => {
       exitAsGuest()
+      queryClient.clear()
       navigate('/dashboard')
     },
   })
