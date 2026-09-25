@@ -11,6 +11,8 @@ import { DashboardPage } from './features/dashboard/DashboardPage'
 import { StatisticsPage } from './features/statistics/StatisticsPage'
 import { NotFoundPage } from './features/not-found/NotFoundPage'
 import { SinglePlayerPage } from './features/game/pages/singleplayer/SinglePlayerPage'
+import { HydrateFallback } from './features/HydrateFallback'
+import { ErrorBoundary } from './features/ErrorBoundary'
 
 export type PlayerAreaLoaderData = {
   user: { username: string } | null
@@ -75,11 +77,12 @@ async function requirePlayerAccess(): Promise<PlayerAreaLoaderData | Response> {
   return redirect('/auth/login')
 }
 
-// TODO: handle routes which don't match
 export const router = createBrowserRouter([
   {
     path: '/',
     Component: AppLayout,
+    ErrorBoundary: ErrorBoundary,
+    HydrateFallback: HydrateFallback,
     children: [
       { index: true, Component: HomePage },
       {
@@ -107,7 +110,7 @@ export const router = createBrowserRouter([
             children: [
               { index: true, loader: () => redirect('/dashboard') },
               { path: 'singleplayer', Component: SinglePlayerPage },
-              { path: 'multiplayer', Component: null },
+              //{ path: 'multiplayer', Component: null },
             ],
           },
         ],
