@@ -23,7 +23,7 @@ export function HomePage() {
   const navigate = useNavigate()
 
   return (
-    <div>
+    <main>
       <Navbar title='Alphabet Ninja' navLinks={navLinks} />
       <Hero
         title={
@@ -43,6 +43,6 @@ export function HomePage() {
         onButtonClick={() => navigate('/auth/login')}
       />
       <AboutSection />
-    </div>
+    </main>
   )
 }
