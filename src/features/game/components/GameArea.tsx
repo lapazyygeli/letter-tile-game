@@ -12,6 +12,7 @@ import type { NavLink } from '../../../types/navlink'
 import { sensors, useGameAreaDND } from '../hooks/useGameAreaDND.ts'
 import { useGameTimer } from '../hooks/useGameTimer.ts'
 import { useLockBodyScroll } from '../../../hooks/useLockBodyScroll.ts'
+import { useGameAreaTheme } from '../hooks/useGameAreaTheme.ts'
 
 const gameAreaMenuModalNavLinks: NavLink[] = [
   {
@@ -38,6 +39,7 @@ export function GameArea({ onGameEnd, onBackToMenu }: GameAreaProps) {
   } = useGameAreaDND()
 
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { theme, toggleTheme } = useGameAreaTheme()
   useGameTimer()
   useLockBodyScroll(true)
 
@@ -50,16 +52,20 @@ export function GameArea({ onGameEnd, onBackToMenu }: GameAreaProps) {
     [checkWords, onGameEnd],
   )
 
+  const handlePlayAgain = useCallback(() => {
+    start()
+  }, [start])
+
   if (status === GAME_STATUS.IDLE) {
     return (
-      <div className='flex h-full items-center justify-center text-amber-700'>
+      <div className='text-gamearea-board flex h-full items-center justify-center'>
         Loading dictionary...
       </div>
     )
   }
 
   return (
-    <div className='touch-none'>
+    <div className='touch-none' data-gamearea-theme={theme}>
       <MenuModal
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
@@ -72,6 +78,8 @@ export function GameArea({ onGameEnd, onBackToMenu }: GameAreaProps) {
           <GameHeader
             onCheck={handleCheck}
             onOpenMenu={() => setIsMenuOpen(true)}
+            theme={theme}
+            onToggleTheme={toggleTheme}
           />
         </div>
         <DragDropProvider
@@ -95,7 +103,7 @@ export function GameArea({ onGameEnd, onBackToMenu }: GameAreaProps) {
       {status === GAME_STATUS.WON && lastResult && (
         <GameEndModal
           result={lastResult}
-          onPlayAgain={onBackToMenu}
+          onPlayAgain={handlePlayAgain}
           onBackToMenu={onBackToMenu}
         />
       )}

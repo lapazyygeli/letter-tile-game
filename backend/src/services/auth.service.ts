@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt'
 import { userRepository } from '../repositories/user.repository.ts'
 import { AuthenticationError } from '../errors/AuthenticationError.ts'
-import { RegistrationError } from '../errors/RegistrationError.ts'
 import { refreshTokenRepository } from '../repositories/refresh-token.repository.ts'
 import { generateToken, hashToken, issueAccessToken } from '../util/token.ts'
 import { REFRESH_TOKEN_TTL_MS } from '../config/constants.ts'
@@ -11,6 +10,10 @@ import type { LoginBody, SignupBody } from '../schemas/auth.schema.ts'
 
 const SALT_ROUNDS = 12
 
+// Use a dummy hash when the user does not exist,
+// so bcrypt still runs and does not reveal valid usernames through timing.
+const DUMMY_PASSWORD_HASH = await bcrypt.hash(generateToken(), SALT_ROUNDS)
+
 export async function registerUser({ username, password }: SignupBody) {
   const existingUser = await userRepository.getUser({ username })
   if (existingUser) {
@@ -18,10 +21,7 @@ export async function registerUser({ username, password }: SignupBody) {
   }
   const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS)
   try {
-    const newUser = await userRepository.createUser({
-      username,
-      password: hashedPassword,
-    })
+    await userRepository.createUser({ username, password: hashedPassword })
   } catch (err) {
     if (isDuplicateKeyError(err))
       throw new ConflictError('Username is not available')
@@ -31,10 +31,12 @@ export async function registerUser({ username, password }: SignupBody) {
 
 export async function authenticateUser({ username, password }: LoginBody) {
   const user = await userRepository.getUser({ username })
-  if (!user) throw new AuthenticationError()
 
-  const isPasswordMatch = await bcrypt.compare(password, user.password)
-  if (!isPasswordMatch) throw new AuthenticationError()
+  const isPasswordMatch = await bcrypt.compare(
+    password,
+    user?.password ?? DUMMY_PASSWORD_HASH,
+  )
+  if (!user || !isPasswordMatch) throw new AuthenticationError()
 
   const userId = user._id.toString()
   const plainRefreshToken = generateToken()

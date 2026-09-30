@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import bgGradient from '../../assets/images/bg-gradient.png'
+import bgGradient from '../../assets/images/bg-gradient.webp'
 
 type HeroProps = {
   title: ReactNode

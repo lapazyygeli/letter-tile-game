@@ -28,8 +28,8 @@ function OpenSidebar({
 }: OpenSidebarProps) {
   return (
     <div>
-      <div className='flex items-center justify-between gap-2 border-b border-amber-100 p-3'>
-        <span className='text-sm font-semibold text-amber-900'>
+      <div className='border-gamearea-border flex items-center justify-between gap-2 border-b p-3'>
+        <span className='text-gamearea-board text-sm font-semibold'>
           Letters ({hand.length})
         </span>
 
@@ -41,8 +41,8 @@ function OpenSidebar({
             className={[
               'cursor-pointer rounded-md px-2 py-1 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-40',
               isExchangeMode
-                ? 'bg-amber-700 text-white'
-                : 'bg-amber-100 text-amber-800',
+                ? 'bg-gamearea-board text-white'
+                : 'text-gamearea-board bg-gamearea-card',
             ].join(' ')}
           >
             Change 1→3
@@ -50,7 +50,7 @@ function OpenSidebar({
           <button
             type='button'
             onClick={() => setIsOpen(false)}
-            className='cursor-pointer text-amber-700'
+            className='text-gamearea-board cursor-pointer'
           >
             ✕
           </button>
@@ -58,7 +58,7 @@ function OpenSidebar({
       </div>
 
       {isExchangeMode && (
-        <p className='border-b border-amber-100 bg-amber-50 px-3 py-2 text-xs text-amber-700'>
+        <p className='text-gamearea-board bg-gamearea-card border-gamearea-card-border border-b px-3 py-2 text-xs'>
           Tap a letter to replace it with three{' '}
           <br className='hidden md:inline' />
           new ones.
@@ -77,7 +77,7 @@ function OpenSidebar({
         ))}
       </div>
 
-      <div className='border-t border-amber-100 p-3 text-xs text-amber-700'>
+      <div className='text-gamearea-board border-gamearea-border border-t p-3 text-xs'>
         Remaining in the bag: {bagCount}
       </div>
     </div>
@@ -97,7 +97,7 @@ function ClosedSidebar({ hand, setIsOpen }: ClosedSidebarProps) {
           <button
             type='button'
             onClick={() => setIsOpen(true)}
-            className='flex h-9 w-9 cursor-pointer items-center justify-center rounded-md bg-amber-100 text-amber-800'
+            className='bg-gamearea-card text-gamearea-card-text flex h-9 w-9 cursor-pointer items-center justify-center rounded-md'
           >
             →
           </button>
@@ -106,7 +106,7 @@ function ClosedSidebar({ hand, setIsOpen }: ClosedSidebarProps) {
       <button
         type='button'
         onClick={() => setIsOpen(true)}
-        className='fixed bottom-4 left-4 z-1 rounded-full bg-amber-700 px-4 py-2 text-sm font-medium text-white shadow-lg md:hidden'
+        className='bg-gamearea-board fixed bottom-4 left-4 z-1 rounded-full px-4 py-2 text-sm font-medium text-white shadow-lg md:hidden'
       >
         Letters ({hand.length})
       </button>
@@ -139,7 +139,9 @@ export function Sidebar() {
   )
 
   return (
-    <aside className={`h-full border-t border-r border-amber-200 bg-white`}>
+    <aside
+      className={`border-gamearea-border bg-gamearea-bg h-full border-t border-r`}
+    >
       {isOpen ? (
         <OpenSidebar
           hand={hand}

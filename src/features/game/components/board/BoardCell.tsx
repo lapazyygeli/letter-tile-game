@@ -35,8 +35,8 @@ function BoardCellImpl({ pos, tile, isInvalid }: BoardCellProps) {
     <div
       ref={ref}
       className={[
-        'absolute flex items-center justify-center border border-amber-600 text-red-700 transition-colors',
-        isDropTarget ? 'bg-amber-200/70' : 'bg-transparent',
+        'border-gamearea-board absolute flex items-center justify-center border text-red-700 transition-colors',
+        isDropTarget ? 'bg-drag-hover' : 'bg-transparent',
         isInvalid ? 'bg-red-50/60 ring-2 ring-red-500 ring-inset' : '',
       ].join(' ')}
       style={{

@@ -11,24 +11,29 @@ const dictionaryCache = new Map<SupportedLanguage, Set<string>>()
 export async function loadDictionary(
   language: SupportedLanguage,
 ): Promise<Set<string>> {
-  const cahcedDictionary = dictionaryCache.get(language)
-  if (cahcedDictionary) return cahcedDictionary
+  const cachedDictionary = dictionaryCache.get(language)
+  if (cachedDictionary) return cachedDictionary
 
-  const words = await loadWordList(language)
-  const dictionary = new Set(words.map((w) => w.toUpperCase()))
+  const dictionary = await buildDictionary(language)
   dictionaryCache.set(language, dictionary)
   return dictionary
 }
 
 /**
- * Load the specific dictionary based on the language. Allow for expansion to
- * other languages ​​by providing different language types.
+ * To add or remove a word from dictionary, edit accepted-words.txt directly
  */
-async function loadWordList(language: SupportedLanguage): Promise<string[]> {
+async function buildDictionary(
+  language: SupportedLanguage,
+): Promise<Set<string>> {
   switch (language) {
     case 'en': {
-      const module = await import('an-array-of-english-words')
-      return module.default
+      const { default: wordListText } =
+        await import('./data/accepted-words.txt?raw')
+      const words = wordListText
+        .split('\n')
+        .map((word) => word.trim())
+        .filter(Boolean)
+      return new Set(words)
     }
     default: {
       const exhaustiveCheck: never = language

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { ErrorToast } from '../../../components/ErrorToast'
 import { login, signup } from '../../../api/auth'
 
@@ -50,6 +50,7 @@ export function SignUpPage() {
   const [formData, setFormData] = useState<SignUpFormData>(initialFormData)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const signupMutation = useMutation({
     mutationFn: () =>
       signup({ username: formData.username, password: formData.password }),
@@ -57,6 +58,7 @@ export function SignUpPage() {
       setFormData(initialFormData)
       setErrorMessage(null)
       await login({ username: formData.username, password: formData.password })
+      queryClient.clear()
       navigate('/dashboard')
     },
     onError: (err) => setErrorMessage(err.message),

@@ -36,7 +36,7 @@ function BoardTileImpl({ id, letter, source, position }: DraggableTileProps) {
         isDragging ? 'opacity-30' : 'cursor-grab active:cursor-grabbing',
       ].join(' ')}
     >
-      <div className='flex h-11 w-11 items-center justify-center rounded-md bg-amber-100 text-lg font-bold text-amber-900 uppercase shadow ring-1 ring-amber-300 select-none'>
+      <div className='text-gamearea-card-text ring-gamearea-card-border bg-gamearea-card flex h-11 w-11 items-center justify-center rounded-md text-lg font-bold uppercase shadow ring-1 select-none'>
         {letter}
       </div>
     </div>

@@ -10,7 +10,7 @@ function TileCount({ count }: TileCountProps) {
   if (count <= 3) return null
 
   return (
-    <span className='pointer-events-none absolute -top-2 -right-2 z-10 flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-700 px-1 text-xs font-bold text-white'>
+    <span className='bg-gamearea-board pointer-events-none absolute -top-2 -right-2 z-10 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-xs font-bold text-white'>
       {count}
     </span>
   )
@@ -31,7 +31,7 @@ function TileStackShadows({ letter, count }: TileStackShadowsProps) {
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={`shadow-${i}`}
-          className='absolute flex h-11 w-11 items-center justify-center rounded-md bg-amber-100 text-lg font-bold text-amber-900 uppercase shadow ring-1 ring-amber-300'
+          className='bg-gamearea-card text-gamearea-card-text ring-gamearea-card-border absolute flex h-11 w-11 items-center justify-center rounded-md text-lg font-bold uppercase shadow ring-1'
           style={{
             left: `${i * 2 + 2}px`,
             bottom: `${i * 4 + 4}px`,
@@ -66,7 +66,7 @@ function TileStackTopTile({
         <button
           type='button'
           onClick={() => onExchange(tile.id)}
-          className='flex h-11 w-11 items-center justify-center rounded-md bg-amber-100 text-lg font-bold text-amber-900 uppercase ring-2 ring-amber-500'
+          className='bg-gamearea-card text-gamearea-card-text ring-gamearea-board flex h-11 w-11 items-center justify-center rounded-md text-lg font-bold uppercase ring-2'
         >
           {letter}
         </button>

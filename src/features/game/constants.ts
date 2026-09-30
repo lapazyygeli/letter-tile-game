@@ -50,9 +50,13 @@ export const LETTER_DISTRIBUTION: Record<string, number> = {
   Z: 2,
 }
 
-/* export const LETTER_DISTRIBUTION: Record<string, number> = {
-  D: 2,
-  G: 1,
-  O: 1,
-  E: 1,
-} */
+export const TOTAL_TILE_COUNT = Object.values(LETTER_DISTRIBUTION).reduce(
+  (sum, count) => sum + count,
+  0,
+)
+
+// Bump this whenever a change to singleplayer's rules or `GameSettings`
+// shape would make old and new statistics not directly comparable (e.g. a
+// new required settings field like difficulty, a different win
+// condition or prefilled starting tiles).
+export const SINGLEPLAYER_RULESET_VERSION = 1
