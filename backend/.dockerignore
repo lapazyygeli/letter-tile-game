@@ -1,0 +1,4 @@
+# Keeps the build context small and local secrets out of the image.
+node_modules
+dist
+.env*
