@@ -1,0 +1,28 @@
+name: alphabetninja
+
+services:
+  frontend:
+    build: .
+    ports:
+      - '3000:3000'
+
+  backend:
+    build: ./backend
+    ports:
+      - '3001:3001'
+    environment:
+      PORT: 3001
+      DATABASE_URL: mongodb://mongo:27017/alphabetninja
+      CORS_ORIGIN: http://localhost:3000
+      JWT_ACCESS_TOKEN_SECRET: ${JWT_ACCESS_TOKEN_SECRET:-local-docker-demo-secret-do-not-use-in-production}
+    depends_on:
+      - mongo
+    restart: on-failure
+
+  mongo:
+    image: mongo:8
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
