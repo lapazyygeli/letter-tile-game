@@ -1,5 +1,6 @@
 import type { Express, NextFunction, Request, Response } from 'express'
 import { requireAuth } from '../middlewares/requireAuth.ts'
+import { statsReqLimiter } from '../middlewares/statsReqLimiter.ts'
 import { validate } from '../middlewares/validateReqBody.ts'
 import {
   saveGameStatsSchema,
@@ -18,6 +19,7 @@ export async function gameStatsRoutes(app: Express) {
   app.post(
     '/api/v1/stats',
     requireAuth,
+    statsReqLimiter,
     validate(saveGameStatsSchema),
     async (
       req: Request<{}, {}, SaveGameStatsBody>,

@@ -9,7 +9,10 @@ export const signupSchema = z.object({
   password: z
     .string({ error: 'Password must be a string' })
     .min(8, 'Password must be at least 8 characters')
-    .max(128, 'Password is too long'),
+    // bcrypt silently ignores everything after the first 72 bytes
+    .refine((password) => Buffer.byteLength(password) <= 72, {
+      error: 'Password is too long',
+    }),
 })
 
 export const loginSchema = z.object({

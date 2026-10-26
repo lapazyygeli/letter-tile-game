@@ -15,6 +15,17 @@ export async function refreshAccessToken(): Promise<string | null> {
   return pendingRefresh
 }
 
+// True if the url points to our own API. Compares resolved origins rather
+// than string prefixes: VITE_API_URL is empty when the API is served from
+// the site's own origin, and every string starts with ''.
+function isApiUrl(url: string): boolean {
+  const apiOrigin = new URL(
+    import.meta.env.VITE_API_URL || '/',
+    window.location.origin,
+  ).origin
+  return new URL(url, window.location.origin).origin === apiOrigin
+}
+
 // Set access token automatically to request if a such is present.
 // If request returns with 401, new accessToken is generated
 // and a same request is made with a new accessToken (assuming that
@@ -24,11 +35,12 @@ export async function apiFetch(
   path: string,
   fetchOptions: RequestInit,
 ): Promise<Response> {
+  // Never send the access token (or refresh it) for another origin.
+  if (!isApiUrl(path)) return fetch(path, fetchOptions)
+
   const headers = new Headers(fetchOptions.headers)
-  if (path.startsWith(import.meta.env.VITE_API_URL)) {
-    const accessToken = tokenStore.get()
-    if (accessToken) headers.set('Authorization', `Bearer ${accessToken}`)
-  }
+  const accessToken = tokenStore.get()
+  if (accessToken) headers.set('Authorization', `Bearer ${accessToken}`)
 
   let res = await fetch(path, { ...fetchOptions, headers: headers })
   // 401: access token missing, 403: access token expired/invalid

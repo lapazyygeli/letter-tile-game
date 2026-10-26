@@ -7,7 +7,11 @@ const APP_MODE = process.env.APP_MODE ?? 'development'
 dotenv.config({ path: `.env.${APP_MODE}` })
 
 const envSchema = z.object({
-  NODE_ENV: z.enum(['development', 'production']).default('development'),
+  // Follows APP_MODE when unset, so a forgotten NODE_ENV in production
+  // can't silently turn off Secure cookies and the rate limiters.
+  NODE_ENV: z
+    .enum(['development', 'production'])
+    .default(APP_MODE === 'production' ? 'production' : 'development'),
   PORT: z.coerce.number().int().positive(),
   DATABASE_URL: z.string().min(1),
   CORS_ORIGIN: z
