@@ -12,6 +12,7 @@ import type { NavLink } from '../../../types/navlink'
 import { sensors, useGameAreaDND } from '../hooks/useGameAreaDND.ts'
 import { useGameTimer } from '../hooks/useGameTimer.ts'
 import { useLockBodyScroll } from '../../../hooks/useLockBodyScroll.ts'
+import { useLockPageZoom } from '../../../hooks/useLockPageZoom.ts'
 import { useGameAreaTheme } from '../hooks/useGameAreaTheme.ts'
 
 const gameAreaMenuModalNavLinks: NavLink[] = [
@@ -41,6 +42,14 @@ export function GameArea({ onGameEnd, onBackToMenu }: GameAreaProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { theme, toggleTheme } = useGameAreaTheme()
   useGameTimer()
+  useLockPageZoom(true)
+
+  // The previous page's scroll position carries over to this route. Reset it
+  // before locking the body, otherwise the body gets locked at that offset and
+  // leaves an empty strip at the bottom of the screen.
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   useLockBodyScroll(true)
 
   useEffect(() => {
