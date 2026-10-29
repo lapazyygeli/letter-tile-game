@@ -11,7 +11,7 @@ export function AboutSection() {
         <div className='bg-bg border-border flex h-full w-full max-w-80 flex-col items-center rounded-lg border-2 px-0.5 pt-7.5 lg:px-4'>
           <span className='mb-7.5 text-[48px]'>🧩</span>
           <p className='mb-4 text-[20px]'>Build & Solve</p>
-          <p className='text-text-mutated mb-4.5 w-full text-center text-[12px] leading-4.75'>
+          <p className='text-text-mutated mb-4.5 w-full text-center text-[14px] leading-4.75'>
             Create words horizontally
             <br /> and vertically — only from
             <br /> left to right and top to
@@ -21,7 +21,7 @@ export function AboutSection() {
         <div className='bg-bg border-border flex h-full w-full max-w-80 flex-col items-center rounded-lg border-2 px-0.5 pt-7.5 lg:px-4'>
           <span className='mb-7.5 text-[48px]'>⏱</span>
           <p className='mb-4 text-[20px]'>Time Your Best</p>
-          <p className='text-text-mutated mb-4.5 w-full text-center text-[12px] leading-4.75'>
+          <p className='text-text-mutated mb-4.5 w-full text-center text-[14px] leading-4.75'>
             Time is ticking! Race against
             <br className='span md:hidden' /> the clock and save your best
             <br className='span md:hidden' /> times.
@@ -30,14 +30,14 @@ export function AboutSection() {
         <div className='bg-bg border-border flex h-full w-full max-w-80 flex-col items-center rounded-lg border-2 px-0.5 pt-7.5 lg:px-4'>
           <span className='mb-7.5 text-[48px]'>👤</span>
           <p className='mb-4 text-[20px]'>Your choice</p>
-          <p className='text-text-mutated mb-4.5 w-full text-center text-[12px] leading-4.75'>
+          <p className='text-text-mutated mb-4.5 w-full text-center text-[14px] leading-4.75'>
             Play as a guest or sign in to save your progress.
           </p>
         </div>
         <div className='bg-bg border-border flex h-full w-full max-w-80 flex-col items-center rounded-lg border-2 px-0.5 pt-7.5 lg:px-4'>
           <span className='mb-7.5 text-[48px]'>⚡</span>
           <p className='mb-4 text-[20px]'>Track Your Stats</p>
-          <p className='text-text-mutated mb-4.5 w-full text-center text-[12px] leading-4.75'>
+          <p className='text-text-mutated mb-4.5 w-full text-center text-[14px] leading-4.75'>
             Keep track of your games and
             <br className='span md:hidden' /> see your progress. Follow your
             <br className='span md:hidden' /> results and personal bests.
